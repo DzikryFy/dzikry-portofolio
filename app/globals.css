@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Color Variables for Dark & Light Themes (Light/White Mode Default) */
+:root,
+.light {
+  --void-950: 255 255 255;
+  --void: 255 255 255;
+  --void-900: 248 250 252;
+  --void-800: 241 245 249;
+  --void-700: 226 232 240;
+  --brass-light: 14 165 233;   /* #0ea5e9 - Sky Azure Cyan */
+  --brass: 2 132 199;          /* #0284c7 - Chi: Chikyuu no Undou ni Tsuite Celestial Blue */
+  --brass-muted: 3 105 161;    /* #0369a1 - Deep Azure */
+  --brass-dark: 7 89 133;      /* #075985 - Cerulean Navy */
+  --brass-faint: rgba(2, 132, 199, 0.12);
+  --parchment: 15 23 42;       /* #0f172a - Deep Midnight Ink Slate */
+  --parchment-dim: 51 65 85;   /* #334155 - Slate */
+  --parchment-dark: 100 116 139; /* #64748b - Muted Slate */
+  --footer-bg: 248 250 252;    /* #f8fafc - Crisp White Ice */
+
+  --bg-color: #FFFFFF;
+  --text-color: #0F172A;
+  --scrollbar-thumb: #0284C7;
+  --scrollbar-track: #FFFFFF;
+}
+
+.dark {
+  --void-950: 4 5 8;
+  --void: 8 9 14;
+  --void-900: 14 16 23;
+  --void-800: 21 24 34;
+  --void-700: 29 33 46;
+  --brass-light: 230 202 126;
+  --brass: 197 160 89;
+  --brass-muted: 142 115 61;
+  --brass-dark: 92 72 35;
+  --brass-faint: rgba(197, 160, 89, 0.12);
+  --parchment: 237 231 216;
+  --parchment-dim: 182 174 156;
+  --parchment-dark: 118 111 95;
+  --footer-bg: 10 10 12;
+
+  --bg-color: #08090E;
+  --text-color: #EDE7D8;
+  --scrollbar-thumb: #2D271B;
+  --scrollbar-track: #08090E;
+}
+
+html {
+  scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-cinzel), serif;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Headings & Judul Tetap Menggunakan Cinzel */
+h1, h2, h3, h4, h5, h6, .font-serif {
+  font-family: var(--font-cinzel), serif;
+}
+
+/* Seluruh Paragraf Deskripsi & Input Menggunakan Font Biasa (Sans Serif) */
+p, .font-sans, input, textarea {
+  font-family: var(--font-plus-jakarta), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Elemen Monospace */
+.font-mono {
+  font-family: var(--font-jetbrains-mono), monospace;
+}
+
+/* Custom Minimalist Hairline Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C5A059;
+}
+
+/* Celestial Selection Highlight */
+::selection {
+  background: #C5A059;
+  color: #08090E;
+}
+
+/* Astrolabe Radial Utilities */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+/* Clean Hairline Grid */
+.hairline-border {
+  border: 1px solid rgba(197, 160, 89, 0.18);
+}
