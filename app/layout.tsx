@@ -105,6 +105,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: 'bnRx9WgON4-NKNTBL5WqGo4dd7mNbrvF_8HjzDhnN8Q',
+  },
 };
 
 const personSchema = {
