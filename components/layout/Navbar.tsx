@@ -42,6 +42,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     } else {
       // Jika dari halaman lain (seperti /proyek), bersihkan storage agar splash screen terpicu saat kembali ke beranda
       try {
+        sessionStorage.removeItem('skip_splash');
         sessionStorage.removeItem('has_seen_splash');
         localStorage.removeItem('has_seen_splash');
       } catch {}

@@ -36,8 +36,7 @@ export const ProjectsArchive: React.FC<ProjectsArchiveProps> = ({ projects }) =>
           href="/"
           onClick={() => {
             try {
-              sessionStorage.setItem('has_seen_splash', 'true');
-              localStorage.setItem('has_seen_splash', 'true');
+              sessionStorage.setItem('skip_splash', 'true');
             } catch {}
           }}
           className="inline-flex items-center gap-2 text-xs font-mono text-parchment-dim hover:text-brass transition-colors tracking-wider group"

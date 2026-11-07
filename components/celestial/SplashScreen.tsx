@@ -10,7 +10,7 @@ interface SplashScreenProps {
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [isLightMode, setIsLightMode] = useState(true); // Default mode terang
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,16 +30,19 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
 
     checkIsLight();
 
-    // Cek apakah user dipaksa melihat splash (?splash=true) atau sudah pernah melewatinya
+    // Pastikan splash screen selalu muncul saat awal masuk web.
+    // Bersihkan residu localStorage lama agar tidak memblokir kemunculan splash.
     try {
+      localStorage.removeItem('has_seen_splash');
+
       const urlParams = new URLSearchParams(window.location.search);
       const forceSplash = urlParams.get('splash') === 'true';
 
-      const hasSeenSplash =
-        !forceSplash &&
-        (sessionStorage.getItem('has_seen_splash') === 'true' ||
-          localStorage.getItem('has_seen_splash') === 'true');
-      if (hasSeenSplash) {
+      const skipSplash =
+        !forceSplash && sessionStorage.getItem('skip_splash') === 'true';
+
+      if (skipSplash) {
+        sessionStorage.removeItem('skip_splash');
         setIsVisible(false);
       } else {
         setIsVisible(true);
@@ -272,10 +275,10 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
     if (isExiting) return;
     setIsExiting(true);
 
-    // Simpan status ke storage agar saat navigasi atau reload, splash tidak muncul berulang
+    // Bersihkan storage residu
     try {
-      sessionStorage.setItem('has_seen_splash', 'true');
-      localStorage.setItem('has_seen_splash', 'true');
+      sessionStorage.removeItem('has_seen_splash');
+      localStorage.removeItem('has_seen_splash');
       if (typeof window !== 'undefined' && window.location.search.includes('splash=true')) {
         window.history.replaceState({}, '', window.location.pathname);
       }
