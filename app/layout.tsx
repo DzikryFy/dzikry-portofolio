@@ -35,6 +35,16 @@ export const metadata: Metadata = {
     default: 'Muhammad Dzikry Fikry — Software Engineer & Web Developer',
     template: '%s | Muhammad Dzikry Fikry',
   },
+  icons: {
+    icon: [
+      {
+        url: '/icon.svg',
+        type: 'image/svg+xml',
+      },
+    ],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
   description:
     'Portofolio resmi Muhammad Dzikry Fikry, Software Engineer & Web Developer yang berfokus pada pengembangan sistem web modern, Next.js, Go, dan arsitektur backend terukur.',
   keywords: [
