@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimeTitleCard } from '@/components/celestial/AnimeTitleCard';
 import { Experience, Education } from '@/types';
-import { Briefcase, GraduationCap, Calendar, MapPin } from 'lucide-react';
+import { Briefcase, GraduationCap, Calendar, MapPin, ArrowRight } from 'lucide-react';
 
 interface TimelineSectionProps {
   experiences: Experience[];
@@ -17,6 +18,11 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'experience' | 'education'>('experience');
 
+  // Maksimal 3 item yang ditampilkan di halaman beranda
+  const displayedExperiences = experiences.slice(0, 3);
+  const displayedEducations = educations.slice(0, 3);
+  const hasMore = experiences.length > 3 || educations.length > 3;
+
   const tabs = [
     { key: 'experience', label: 'PENGALAMAN KERJA', icon: Briefcase },
     { key: 'education', label: 'PENDIDIKAN', icon: GraduationCap },
@@ -25,11 +31,30 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
   return (
     <section id="timeline" className="relative py-16 sm:py-24 border-t border-brass/15 bg-transparent scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Seksi Pengalaman & Pendidikan */}
-        <AnimeTitleCard
-          title="PENGALAMAN & PENDIDIKAN"
-          description="Perjalanan karir profesional, pengalaman implementasi sistem perangkat lunak, dan latar belakang akademik."
-        />
+        {/* Header Seksi Pengalaman & Pendidikan: Judul di Kiri & Link Teks di Kanan Atas */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <AnimeTitleCard
+            title="PENGALAMAN & PENDIDIKAN"
+            description="Perjalanan karir profesional, pengalaman implementasi sistem perangkat lunak, dan latar belakang akademik."
+            className="mb-0"
+          />
+
+          <motion.div
+            initial={{ opacity: 0, x: 16, filter: 'blur(4px)' }}
+            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="pb-2 self-start sm:self-end shrink-0"
+          >
+            <Link
+              href="/pendidikan-pengalaman"
+              className="group inline-flex items-center gap-2 font-mono text-xs font-bold tracking-widest text-brass hover:text-brass-light uppercase transition-all duration-200 border-b border-brass/30 hover:border-brass pb-0.5 cursor-pointer"
+            >
+              <span>LIHAT SELURUH RIWAYAT</span>
+              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
+        </div>
 
         {/* Tab Switcher (Kapsul Melengkung Halus - 1 Baris di Layar Mobile) */}
         <motion.div
@@ -75,7 +100,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-8 sm:space-y-10"
               >
-                {experiences.map((exp, idx) => (
+                {displayedExperiences.map((exp, idx) => (
                   <motion.div
                     key={exp._id || idx}
                     initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
@@ -167,7 +192,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-8 sm:space-y-10"
               >
-                {educations.map((edu, idx) => (
+                {displayedEducations.map((edu, idx) => (
                   <motion.div
                     key={edu._id || idx}
                     initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
@@ -226,6 +251,19 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Tombol Lihat Lebih Banyak jika item > 3 atau untuk membuka halaman arsip */}
+          {hasMore && (
+            <div className="pt-10 text-center">
+              <Link
+                href="/pendidikan-pengalaman"
+                className="group inline-flex items-center gap-2 px-6 py-2.5 sm:px-7 sm:py-3 rounded-full border border-brass/40 bg-white/70 dark:bg-void-950/80 hover:bg-brass hover:text-white dark:hover:text-void-950 text-brass font-mono text-xs font-bold tracking-wider uppercase transition-all duration-200 shadow-sm active:scale-95"
+              >
+                <span>LIHAT LEBIH BANYAK PENGALAMAN & PENDIDIKAN</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </section>

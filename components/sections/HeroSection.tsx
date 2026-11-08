@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { HeroPortrait } from '@/components/celestial/HeroPortrait';
 import { Profile } from '@/types';
-import { ArrowRight, Mail, Github, Linkedin } from 'lucide-react';
+import { ArrowRight, Mail } from 'lucide-react';
 
 interface HeroSectionProps {
   profile: Profile;
@@ -103,40 +103,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
               >
                 <Mail className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-brass" />
                 <span>HUBUNGI SAYA</span>
-              </a>
-            </div>
-
-            {/* Deretan Link Ikonik Minimalis (GitHub, LinkedIn, Email) */}
-            <div className="pt-1.5 flex flex-wrap items-center gap-2.5 sm:gap-3 text-parchment-dim font-mono text-xs sm:text-sm">
-              <a
-                href={githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brass/25 bg-white/70 dark:bg-void-950/70 hover:border-brass hover:bg-brass/10 hover:text-brass transition-all duration-200 shadow-sm"
-                title="Profil GitHub"
-              >
-                <Github className="w-4 h-4 text-brass group-hover:scale-110 transition-transform" />
-                <span className="font-semibold text-xs tracking-wider uppercase">GitHub</span>
-              </a>
-
-              <a
-                href={linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brass/25 bg-white/70 dark:bg-void-950/70 hover:border-brass hover:bg-brass/10 hover:text-brass transition-all duration-200 shadow-sm"
-                title="Profil LinkedIn"
-              >
-                <Linkedin className="w-4 h-4 text-brass group-hover:scale-110 transition-transform" />
-                <span className="font-semibold text-xs tracking-wider uppercase">LinkedIn</span>
-              </a>
-
-              <a
-                href={mailtoHref}
-                className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brass/25 bg-white/70 dark:bg-void-950/70 hover:border-brass hover:bg-brass/10 hover:text-brass transition-all duration-200 shadow-sm"
-                title="Kirim Email"
-              >
-                <Mail className="w-4 h-4 text-brass group-hover:scale-110 transition-transform" />
-                <span className="font-semibold text-xs tracking-wider uppercase">Email</span>
               </a>
             </div>
           </div>

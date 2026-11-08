@@ -3,6 +3,7 @@ import { getPortfolioData } from '@/lib/sanityFetch';
 import { getGitHubContributions } from '@/lib/githubContributions';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { FloatingSocialDock } from '@/components/layout/FloatingSocialDock';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { SplashScreen } from '@/components/celestial/SplashScreen';
 import { MilkyWayGalaxy } from '@/components/celestial/MilkyWayGalaxy';
@@ -52,6 +53,9 @@ export default async function HomePage() {
         monogram={data.profile.name?.[0] || 'D'}
         name={data.profile.name}
       />
+
+      {/* 2.5 Floating Quick Social Dock (Pojok Kanan Bawah, di atas Telemetri/Koordinat) */}
+      <FloatingSocialDock profile={data.profile} />
 
       {/* 3. Main Content Layer (Z-10, Transparent) */}
       <main id="main-content" className="relative z-10 bg-transparent">

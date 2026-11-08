@@ -15,8 +15,6 @@ export const Footer: React.FC<FooterProps> = ({
   profile,
   className = '',
 }) => {
-  const [copied, setCopied] = useState(false);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -28,14 +26,6 @@ export const Footer: React.FC<FooterProps> = ({
   const phone = profile.phone || '+62 812-8838-9457';
   const whatsappUrl = `https://wa.me/${phone.replace(/[^0-9]/g, '')}`;
   const address = profile.location || 'Depok, Jawa Barat, Indonesia';
-
-  const handleCopyEmail = () => {
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
 
   // Site map disesuaikan sesuai navigasi: PROFILE, KEAHLIAN, PENGALAMAN
   const siteMapLinks = [
@@ -132,21 +122,13 @@ export const Footer: React.FC<FooterProps> = ({
               </h4>
               <ul className="mt-4 space-y-2.5">
                 {/* Email dengan Tombol Salin Cepat */}
-                <li className="flex items-center gap-2">
+                <li>
                   <a
                     href={mailHref}
                     className="text-xs font-mono tracking-wider text-parchment-dim hover:text-brass transition-colors inline-block break-all sm:break-normal"
                   >
                     {email}
                   </a>
-                  <button
-                    type="button"
-                    onClick={handleCopyEmail}
-                    className="text-[10px] font-mono px-2 py-0.5 rounded border border-brass/25 bg-brass/10 hover:bg-brass/20 text-brass transition-all shrink-0 cursor-pointer active:scale-95"
-                    title="Salin Email ke Clipboard"
-                  >
-                    {copied ? 'Tersalin! ✓' : 'Salin'}
-                  </button>
                 </li>
 
                 {/* GitHub */}
@@ -167,11 +149,10 @@ export const Footer: React.FC<FooterProps> = ({
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono tracking-wider text-parchment-dim hover:text-brass transition-colors inline-flex items-center gap-1.5"
+                    className="text-xs font-mono tracking-wider text-parchment-dim hover:text-brass transition-colors inline-block"
                     title="Hubungi via WhatsApp"
                   >
-                    <span>{phone}</span>
-                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 font-mono">(WhatsApp)</span>
+                    {phone}
                   </a>
                 </li>
 
