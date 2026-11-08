@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import { getPortfolioData } from '@/lib/sanityFetch';
+import { getGitHubContributions } from '@/lib/githubContributions';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { HeroSection } from '@/components/sections/HeroSection';
@@ -16,6 +17,11 @@ const ProjectsSection = dynamic(
   { ssr: true }
 );
 
+const GitHubContributionsSection = dynamic(
+  () => import('@/components/sections/GitHubContributionsSection').then((m) => m.GitHubContributionsSection),
+  { ssr: true }
+);
+
 const TimelineSection = dynamic(
   () => import('@/components/sections/TimelineSection').then((m) => m.TimelineSection),
   { ssr: true }
@@ -24,7 +30,10 @@ const TimelineSection = dynamic(
 export const revalidate = 3600; // ISR revalidation setiap 1 jam (atau instan via on-demand webhook)
 
 export default async function HomePage() {
-  const data = await getPortfolioData();
+  const [data, githubContributions] = await Promise.all([
+    getPortfolioData(),
+    getGitHubContributions('DzikryFy'),
+  ]);
 
   return (
     <div className="relative min-h-screen bg-transparent text-parchment overflow-x-hidden">
@@ -57,6 +66,9 @@ export default async function HomePage() {
 
         {/* Bagian 01: Proyek Unggulan */}
         <ProjectsSection projects={data.projects} />
+
+        {/* Bagian Interaktif: Kalender Kontribusi & Aktivitas GitHub */}
+        <GitHubContributionsSection initialData={githubContributions} />
 
         {/* Bagian 02: Pengalaman & Pendidikan */}
         <TimelineSection
