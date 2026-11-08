@@ -17,7 +17,6 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
   showHUD = true,
   contentTargetId = 'main-content',
 }) => {
-  const [isSimReady, setIsSimReady] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const triggerWarpRef = useRef<() => void>(() => {});
   const [telemetry, setTelemetry] = useState({
@@ -28,44 +27,7 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
     isScrolling: false,
   });
 
-  // Penundaan cerdas: Mulai simulasi berat hanya setelah user klik 'JELAJAHI' atau browser idle
   useEffect(() => {
-    let idleId: any;
-    let timerId: any;
-
-    const startSimulation = () => {
-      setIsSimReady(true);
-    };
-
-    const hasSeenSplash =
-      typeof window !== 'undefined' &&
-      sessionStorage.getItem('skip_splash') === 'true';
-
-    if (mode === 'embedded' || hasSeenSplash) {
-      if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-        idleId = (window as any).requestIdleCallback(startSimulation, { timeout: 1800 });
-      } else {
-        timerId = setTimeout(startSimulation, 800);
-      }
-    }
-
-    const onSplashDismissed = () => {
-      startSimulation();
-    };
-
-    window.addEventListener('splash-dismissed', onSplashDismissed);
-
-    return () => {
-      window.removeEventListener('splash-dismissed', onSplashDismissed);
-      if (idleId && typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
-        (window as any).cancelIdleCallback(idleId);
-      }
-      if (timerId) clearTimeout(timerId);
-    };
-  }, [mode]);
-
-  useEffect(() => {
-    if (!isSimReady) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -363,9 +325,12 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
     let lastTelemetryUpdate = 0;
     let galaxyRotation = 0;
 
-    // Di awal kunjungan, selalu jeda simulasi MilkyWayGalaxy saat layar tertutup Splash Screen.
-    // Animasi latar belakang hanya mulai aktif begitu tombol JELAJAHI diklik (event 'splash-dismissed').
-    let isPaused = true;
+    // Periksa apakah splash screen saat ini sedang aktif menutupi layar
+    const isSplashActive =
+      typeof document !== 'undefined' &&
+      Boolean(document.getElementById('splash-screen-root'));
+
+    let isPaused = isSplashActive;
     if (typeof window !== 'undefined' && sessionStorage.getItem('skip_splash') === 'true') {
       isPaused = false;
     }
@@ -387,6 +352,17 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
 
     window.addEventListener('splash-dismissed', handleResume);
     window.addEventListener('trigger-splash', handlePause);
+
+    // Fallback interaktif: jika event terlewat karena timing, resume saat scroll/touch
+    window.addEventListener('scroll', handleResume, { passive: true, once: true });
+    window.addEventListener('pointerdown', handleResume, { passive: true, once: true });
+
+    // Safety timer: jika splash screen sudah hilang dari DOM, pastikan canvas berjalan
+    const safetyCheckTimer = setTimeout(() => {
+      if (isPaused && (!document.getElementById('splash-screen-root') || sessionStorage.getItem('skip_splash') === 'true')) {
+        handleResume();
+      }
+    }, 400);
 
     // ==========================================
     // 3. MAIN ANIMATION LOOP
@@ -1634,15 +1610,18 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
     return () => {
       isDestroyed = true;
       cancelAnimationFrame(animationFrameId);
+      clearTimeout(safetyCheckTimer);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', handleResume);
+      window.removeEventListener('pointerdown', handleResume);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('click', onClick);
       window.removeEventListener('splash-dismissed', handleResume);
       window.removeEventListener('trigger-splash', handlePause);
       if (scrollTimeout) clearTimeout(scrollTimeout);
     };
-  }, [isSimReady, mode]);
+  }, [mode, contentTargetId]);
 
   if (mode === 'embedded') {
     return (
@@ -1671,7 +1650,7 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
       </div>
 
       {/* Interactive Telemetry HUD (Live Orbit & Planet Rotation Status) */}
-      {showHUD && isSimReady && (
+      {showHUD && (
         <>
           {/* Desktop & Laptop HUD (md+) - Bersih, Tajam, & Bebas Efek Neon/Blur */}
           <div

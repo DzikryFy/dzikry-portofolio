@@ -4,12 +4,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { SplashScreen } from '@/components/celestial/SplashScreen';
-
-// Code-splitting komponen canvas dan section below-the-fold untuk memaksimalkan skor LCP & TBT
-const MilkyWayGalaxy = dynamic(
-  () => import('@/components/celestial/MilkyWayGalaxy').then((m) => m.MilkyWayGalaxy),
-  { ssr: false }
-);
+import { MilkyWayGalaxy } from '@/components/celestial/MilkyWayGalaxy';
 
 const TechStackSection = dynamic(
   () => import('@/components/sections/TechStackSection').then((m) => m.TechStackSection),
