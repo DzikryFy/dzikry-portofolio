@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, Mail } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
@@ -15,6 +15,17 @@ export const Navbar: React.FC<NavbarProps> = ({
   name = 'DZIKRY',
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Navigasi diselaraskan: hanya PROFILE, KEAHLIAN (menggantikan PROYEK), PENGALAMAN
   const navLinks = [
@@ -51,7 +62,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 bg-transparent py-3.5 sm:py-5 select-none transition-all duration-300"
+      className={`fixed top-0 left-0 right-0 z-50 select-none transition-all duration-300 ${
+        isScrolled || mobileMenuOpen
+          ? 'bg-void-950/75 dark:bg-void-950/80 backdrop-blur-md border-b border-slate-200/50 dark:border-brass/15 py-3 sm:py-3.5 shadow-sm'
+          : 'bg-transparent border-b border-transparent py-3.5 sm:py-5'
+      }`}
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo (Kiri) - Teks DZIKRY (Memencet logo akan memicu splash animasi) */}
