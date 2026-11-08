@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, Mail } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { useLanguage } from '@/components/i18n/LanguageProvider';
+import { LanguageToggle } from '@/components/i18n/LanguageToggle';
 
 interface NavbarProps {
   monogram?: string;
@@ -16,6 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,11 +30,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Navigasi diselaraskan: hanya PROFILE, KEAHLIAN (menggantikan PROYEK), PENGALAMAN
+  // Navigasi multibahasa: PROFILE, KEAHLIAN / SKILLS, PENGALAMAN / EXPERIENCE
   const navLinks = [
-    { href: '/#about', label: 'PROFILE' },
-    { href: '/#tech-stack', label: 'KEAHLIAN' },
-    { href: '/#timeline', label: 'PENGALAMAN' },
+    { href: '/#about', label: t.nav.profile },
+    { href: '/#tech-stack', label: t.nav.skills },
+    { href: '/#timeline', label: t.nav.experience },
   ];
 
   const scrollToFooter = (e: React.MouseEvent) => {
@@ -95,8 +98,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           ))}
         </nav>
 
-        {/* Aksi Kanan: Tombol Contact (ke Footer) & Mode Tema (Theme Toggle) */}
-        <div className="flex items-center gap-2 sm:gap-3 z-10">
+        {/* Aksi Kanan: Tombol Contact, Pengalih Bahasa, & Mode Tema */}
+        <div className="flex items-center gap-2 sm:gap-2.5 z-10">
           {/* Tombol Contact Samping Mode Tema (Desktop & Tablet) */}
           <Link
             href="/#footer"
@@ -104,22 +107,27 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-brass/35 bg-white/70 dark:bg-void-950/80 hover:border-brass hover:bg-brass/10 hover:shadow-brass-glow text-slate-800 dark:text-parchment hover:text-brass transition-all duration-200 text-xs font-mono font-bold tracking-wider uppercase active:scale-95 shadow-sm"
           >
             <Mail className="w-3.5 h-3.5 text-brass" />
-            <span>CONTACT</span>
+            <span>{t.nav.contact}</span>
           </Link>
+
+          {/* Pengalih Bahasa ID | EN (Desktop & Tablet) */}
+          <LanguageToggle className="hidden sm:inline-flex" />
 
           {/* Tombol Ganti Tema (Desktop & Tablet) */}
           <ThemeToggle className="hidden sm:inline-flex" />
 
-          {/* Mobile Buttons (Contact, Theme Toggle, Hamburger Menu) */}
-          <div className="flex items-center gap-2 lg:hidden">
+          {/* Mobile Buttons (Contact, Language Toggle, Theme Toggle, Hamburger Menu) */}
+          <div className="flex items-center gap-1.5 lg:hidden">
             <Link
               href="/#footer"
               onClick={scrollToFooter}
               className="sm:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-brass/35 bg-white/80 dark:bg-void-950/90 text-[11px] font-mono font-bold tracking-wider text-slate-800 dark:text-parchment hover:text-brass transition-colors active:scale-95"
             >
               <Mail className="w-3 h-3 text-brass" />
-              <span>CONTACT</span>
+              <span>{t.nav.contact}</span>
             </Link>
+
+            <LanguageToggle className="sm:hidden" />
 
             <ThemeToggle className="sm:hidden" />
 
@@ -157,8 +165,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="w-full py-2.5 rounded-full border border-brass/40 bg-brass/15 hover:bg-brass/25 text-center font-mono text-xs font-bold tracking-widest text-parchment uppercase transition-colors inline-flex items-center justify-center gap-2"
             >
               <Mail className="w-4 h-4 text-brass" />
-              <span>CONTACT</span>
+              <span>{t.nav.contact}</span>
             </Link>
+
+            <div className="flex items-center justify-between gap-2 px-1">
+              <span className="text-xs font-mono text-parchment-dim">Bahasa / Language:</span>
+              <LanguageToggle showIcon />
+            </div>
 
             {/* Theme Toggle di dalam Drawer */}
             <ThemeToggle showLabel className="w-full py-2.5 justify-center" />

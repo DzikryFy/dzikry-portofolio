@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Project } from '@/types';
 import { ExternalLink, Github, Maximize2 } from 'lucide-react';
+import { useLanguage } from '@/components/i18n/LanguageProvider';
 
 const defaultProjectImages = [
   'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
@@ -47,10 +48,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   onSelect,
   className = '',
 }) => {
+  const { t } = useLanguage();
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });
   const [isMobileActive, setIsMobileActive] = useState(false);
+
+  const itemTranslation = t.projects.items[project.slug];
+  const displayTitle = itemTranslation?.title || project.title;
+  const displayDescription = itemTranslation?.description || project.description;
 
   const isQCProject =
     project.slug === 'qc-web-silondo-bermula' ||
@@ -140,13 +146,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         <div className="space-y-2 sm:space-y-2.5">
           {/* Judul Proyek */}
           <h3 className="text-base sm:text-lg font-serif font-bold text-brass-light tracking-wide line-clamp-1 drop-shadow-sm">
-            {project.title}
+            {displayTitle}
           </h3>
 
           {/* Deskripsi Proyek */}
-          {project.description && (
+          {displayDescription && (
             <p className="text-xs sm:text-[13px] text-parchment/90 font-sans leading-relaxed line-clamp-2 sm:line-clamp-3">
-              {project.description}
+              {displayDescription}
             </p>
           )}
 
@@ -174,10 +180,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brass hover:bg-brass-light text-void-950 text-xs font-mono font-bold tracking-wider transition-colors shadow-sm active:scale-95"
-                  title="Buka Demo Langsung"
+                  title={t.projects.btnDemo}
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span>DEMO</span>
+                  <span>{t.projects.btnDemo}</span>
                 </a>
               )}
 
@@ -188,10 +194,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-brass/40 bg-void-900/80 hover:bg-brass/20 text-parchment text-xs font-mono font-bold tracking-wider transition-colors active:scale-95"
-                  title="Buka Kode Repositori"
+                  title={t.projects.btnCode}
                 >
                   <Github className="w-3.5 h-3.5 text-brass" />
-                  <span>KODE</span>
+                  <span>{t.projects.btnCode}</span>
                 </a>
               )}
             </div>
@@ -203,9 +209,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 onSelect?.(project);
               }}
               className="inline-flex items-center gap-1 text-[11px] font-mono text-parchment-dim hover:text-brass transition-colors uppercase tracking-wider ml-auto"
-              title="Lihat Detail Lengkap"
+              title={t.projects.btnDetail}
             >
-              <span>DETAIL</span>
+              <span>{t.projects.btnDetail}</span>
               <Maximize2 className="w-3 h-3 text-brass" />
             </button>
           </div>

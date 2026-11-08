@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Project } from '@/types';
 import { X, ExternalLink, Github } from 'lucide-react';
 import { getDefaultProjectImage, getProjectCoverImage } from './ProjectCard';
+import { useLanguage } from '@/components/i18n/LanguageProvider';
 
 interface ProjectModalProps {
   project: Project | null;
@@ -13,6 +14,8 @@ interface ProjectModalProps {
 }
 
 export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
+  const { t } = useLanguage();
+
   // Tutup dengan tombol Escape & kunci scroll body saat modal aktif
   useEffect(() => {
     if (!project) return;
@@ -30,6 +33,11 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [project, onClose]);
+
+  const itemTranslation = project ? t.projects.items[project.slug] : undefined;
+  const displayTitle = itemTranslation?.title || project?.title;
+  const displayDescription = itemTranslation?.description || project?.description;
+  const displayLongDesc = itemTranslation?.longDescription || project?.longDescription;
 
   return (
     <AnimatePresence>
@@ -64,8 +72,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
               type="button"
               onClick={onClose}
               className="absolute top-4 right-4 sm:top-6 sm:right-6 w-9 h-9 rounded-full border border-brass/30 bg-brass/10 hover:bg-brass hover:text-void-950 text-brass flex items-center justify-center transition-all duration-200 active:scale-90 shadow-sm cursor-pointer z-20"
-              aria-label="Tutup jendela modal"
-              title="Tutup (Esc)"
+              aria-label={t.modal.close}
+              title={`${t.modal.close} (Esc)`}
             >
               <X className="w-4 h-4" />
             </button>
@@ -73,7 +81,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             {/* Header: Tag Kategori / Epoch */}
             <div className="flex items-center gap-2 pr-12">
               <span className="text-[10px] sm:text-xs font-mono text-brass uppercase font-bold tracking-widest">
-                // PROYEK {project.japaneseTitle ? `// ${project.japaneseTitle}` : ''}
+                // {t.archive.tabFeatured} {project.japaneseTitle ? `// ${project.japaneseTitle}` : ''}
               </span>
               {project.epoch && (
                 <span className="text-[10px] font-mono text-parchment-dim tracking-wider">
@@ -87,14 +95,14 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
               id="modal-project-title"
               className="text-2xl sm:text-3xl font-serif font-bold text-brass dark:text-parchment tracking-tight"
             >
-              {project.title}
+              {displayTitle}
             </h2>
 
             {/* Gambar Cover Proyek */}
             <div className="relative w-full aspect-video overflow-hidden rounded-xl border border-brass/20 bg-void-900 shadow-md">
               <Image
                 src={getProjectCoverImage(project, 0)}
-                alt={`Detail gambar proyek ${project.title}`}
+                alt={`Detail gambar proyek ${displayTitle}`}
                 fill
                 quality={80}
                 sizes="(max-width: 640px) 100vw, 672px"
@@ -119,11 +127,11 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             {/* Bagian: Deskripsi Lengkap */}
             <div className="space-y-2.5 text-sm sm:text-base text-parchment-dim font-sans leading-relaxed">
               <p className="text-parchment font-medium">
-                {project.description}
+                {displayDescription}
               </p>
-              {project.longDescription && project.longDescription !== project.description && (
+              {displayLongDesc && displayLongDesc !== displayDescription && (
                 <p className="text-parchment-dim">
-                  {project.longDescription}
+                  {displayLongDesc}
                 </p>
               )}
             </div>
@@ -148,7 +156,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                       className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-brass bg-brass hover:bg-brass-light text-white dark:text-void-950 font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-brass-glow active:scale-95"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
-                      <span>KUNJUNGI DEMO</span>
+                      <span>{t.projects.btnDemo}</span>
                     </a>
                   )}
 
@@ -160,7 +168,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                       className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-brass/40 bg-white dark:bg-black hover:border-brass text-slate-900 dark:text-parchment hover:text-brass font-mono text-xs font-semibold uppercase tracking-wider transition-all duration-200 shadow-sm dark:shadow-md dark:shadow-black active:scale-95"
                     >
                       <Github className="w-3.5 h-3.5" />
-                      <span>KODE REPOSITORI</span>
+                      <span>{t.projects.btnCode}</span>
                     </a>
                   )}
                 </div>

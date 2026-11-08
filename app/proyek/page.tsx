@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getPortfolioData } from '@/lib/sanityFetch';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { FloatingSocialDock } from '@/components/layout/FloatingSocialDock';
 import { MilkyWayGalaxy } from '@/components/celestial/MilkyWayGalaxy';
 import { ProjectsArchive } from '@/components/sections/ProjectsArchive';
 
@@ -30,6 +31,9 @@ export default async function ProyekPage() {
         monogram={data.profile.name?.[0] || 'D'}
         name={data.profile.name}
       />
+
+      {/* 2.5 Floating Social Dock */}
+      <FloatingSocialDock profile={data.profile} />
 
       {/* 3. Main Content Layer (z-10, bg-transparent) */}
       <main id="main-projects-archive" className="relative z-10 bg-transparent">

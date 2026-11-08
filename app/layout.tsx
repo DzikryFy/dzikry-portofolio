@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Cinzel, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
+import { LanguageProvider } from '@/components/i18n/LanguageProvider';
 
 const cinzel = Cinzel({
   subsets: ['latin'],
@@ -219,7 +220,9 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-void text-parchment antialiased selection:bg-brass selection:text-void-950 font-serif">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

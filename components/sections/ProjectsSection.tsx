@@ -8,6 +8,7 @@ import { AnimeTitleCard } from '@/components/celestial/AnimeTitleCard';
 import { ProjectCard } from '@/components/sections/ProjectCard';
 import { Project } from '@/types';
 import { ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/components/i18n/LanguageProvider';
 
 const ProjectModal = dynamic(
   () => import('@/components/sections/ProjectModal').then((m) => m.ProjectModal),
@@ -19,6 +20,7 @@ interface ProjectsSectionProps {
 }
 
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) => {
+  const { t } = useLanguage();
   // Menampilkan maksimal 4 proyek terbaru pada homepage
   const latestProjects = projects.slice(0, 4);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -29,8 +31,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
         {/* Header Seksi: Judul di Kiri & Link Teks "LIHAT SELURUH PROYEK" di Kanan Atas */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <AnimeTitleCard
-            title="PROYEK UNGGULAN"
-            description="Koleksi aplikasi web dan sistem perangkat lunak terbaru yang telah saya bangun."
+            title={t.projects.title}
+            description={t.projects.subtitle}
             className="mb-0"
           />
 
@@ -45,7 +47,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
               href="/proyek"
               className="group inline-flex items-center gap-2 font-mono text-xs font-bold tracking-widest text-brass hover:text-brass-light uppercase transition-all duration-200 border-b border-brass/30 hover:border-brass pb-0.5 cursor-pointer"
             >
-              <span>LIHAT SELURUH PROYEK</span>
+              <span>{t.projects.viewAll}</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </motion.div>

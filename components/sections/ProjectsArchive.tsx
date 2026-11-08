@@ -7,23 +7,32 @@ import { ProjectCard } from '@/components/sections/ProjectCard';
 import { ProjectModal } from '@/components/sections/ProjectModal';
 import { AnimeTitleCard } from '@/components/celestial/AnimeTitleCard';
 import { ArrowLeft, Search } from 'lucide-react';
+import { useLanguage } from '@/components/i18n/LanguageProvider';
 
 interface ProjectsArchiveProps {
   projects: Project[];
 }
 
 export const ProjectsArchive: React.FC<ProjectsArchiveProps> = ({ projects }) => {
+  const { language, t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<'all' | 'featured'>('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const filteredProjects = projects.filter((p) => {
     const matchesFilter = filter === 'all' || (filter === 'featured' && p.featured);
+    const trans = t.projects.items[p.slug];
+    const title = (trans?.title || p.title).toLowerCase();
+    const desc = (trans?.description || p.description || '').toLowerCase();
+    const q = searchQuery.toLowerCase();
+
     const matchesSearch =
       searchQuery.trim() === '' ||
-      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (p.tags && p.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())));
+      title.includes(q) ||
+      desc.includes(q) ||
+      p.title.toLowerCase().includes(q) ||
+      (p.description && p.description.toLowerCase().includes(q)) ||
+      (p.tags && p.tags.some((t) => t.toLowerCase().includes(q)));
 
     return matchesFilter && matchesSearch;
   });
@@ -42,15 +51,15 @@ export const ProjectsArchive: React.FC<ProjectsArchiveProps> = ({ projects }) =>
           className="inline-flex items-center gap-2 text-xs font-mono text-parchment-dim hover:text-brass transition-colors tracking-wider group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          <span>KEMBALI KE BERANDA</span>
+          <span>{t.archive.backHome}</span>
         </Link>
       </div>
 
       {/* Header Halaman */}
       <div className="mb-10 pb-8 border-b border-brass/20 space-y-6">
         <AnimeTitleCard
-          title="SELURUH PROYEK"
-          description="Koleksi lengkap seluruh aplikasi web, sistem terdistribusi, dan produk digital yang telah saya bangun."
+          title={t.archive.projectsTitle}
+          description={t.archive.projectsSubtitle}
           className="mb-0"
         />
 
@@ -63,7 +72,7 @@ export const ProjectsArchive: React.FC<ProjectsArchiveProps> = ({ projects }) =>
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Cari proyek..."
+              placeholder={t.archive.searchProjects}
               className="pl-10 pr-4 py-2 rounded-full border border-brass/25 bg-void-950/80 text-parchment text-xs font-mono placeholder:text-parchment-dark focus:outline-none focus:border-brass transition-colors w-full"
             />
           </div>
@@ -78,7 +87,7 @@ export const ProjectsArchive: React.FC<ProjectsArchiveProps> = ({ projects }) =>
                   : 'border-brass/20 text-parchment-dim hover:border-brass/40 hover:text-parchment'
               }`}
             >
-              SEMUA
+              {t.archive.tabAll}
             </button>
             <button
               onClick={() => setFilter('featured')}
@@ -88,7 +97,7 @@ export const ProjectsArchive: React.FC<ProjectsArchiveProps> = ({ projects }) =>
                   : 'border-brass/20 text-parchment-dim hover:border-brass/40 hover:text-parchment'
               }`}
             >
-              UNGGULAN
+              {t.archive.tabFeatured}
             </button>
           </div>
         </div>
@@ -114,7 +123,7 @@ export const ProjectsArchive: React.FC<ProjectsArchiveProps> = ({ projects }) =>
       ) : (
         <div className="text-center py-20 border border-brass/15 rounded-2xl bg-void-950/40">
           <p className="text-sm font-mono text-parchment-dim">
-            Tidak ada proyek yang cocok dengan kata kunci &ldquo;{searchQuery}&rdquo;.
+            {t.archive.noProjectsMatch} &ldquo;{searchQuery}&rdquo;.
           </p>
           <button
             onClick={() => {
@@ -123,7 +132,7 @@ export const ProjectsArchive: React.FC<ProjectsArchiveProps> = ({ projects }) =>
             }}
             className="mt-4 px-5 py-2 text-xs font-mono text-brass border border-brass/30 hover:border-brass rounded-full transition-colors"
           >
-            RESET PENCARIAN
+            {language === 'en' ? 'RESET SEARCH' : 'RESET PENCARIAN'}
           </button>
         </div>
       )}

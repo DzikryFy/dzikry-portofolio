@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
 import { Profile } from '@/types';
+import { useLanguage } from '@/components/i18n/LanguageProvider';
 
 interface FooterProps {
   profile: Profile;
@@ -15,6 +16,8 @@ export const Footer: React.FC<FooterProps> = ({
   profile,
   className = '',
 }) => {
+  const { t } = useLanguage();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -29,9 +32,9 @@ export const Footer: React.FC<FooterProps> = ({
 
   // Site map disesuaikan sesuai navigasi: PROFILE, KEAHLIAN, PENGALAMAN
   const siteMapLinks = [
-    { label: 'PROFILE', href: '/#about' },
-    { label: 'KEAHLIAN', href: '/#tech-stack' },
-    { label: 'PENGALAMAN', href: '/#timeline' },
+    { label: t.nav.profile, href: '/#about' },
+    { label: t.nav.skills, href: '/#tech-stack' },
+    { label: t.nav.experience, href: '/#timeline' },
   ];
 
   return (
@@ -52,9 +55,7 @@ export const Footer: React.FC<FooterProps> = ({
 
               {/* Deskripsi Singkat */}
               <p className="mt-4 text-xs sm:text-sm text-parchment-dim font-sans leading-relaxed max-w-md">
-                {Array.isArray(profile.bio) && profile.bio.length > 0
-                  ? profile.bio[0]
-                  : 'Hello, Saya Muhammad Dzikry Fikry, seorang Software Engineer & Web Developer yang berfokus pada pembangunan sistem web modern, performa tinggi, dan pengalaman pengguna yang responsif.'}
+                {t.hero.bio[0]}
               </p>
             </div>
 
@@ -99,7 +100,7 @@ export const Footer: React.FC<FooterProps> = ({
             {/* Kolom Site Map */}
             <div>
               <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-brass dark:text-parchment">
-                Site Map
+                {t.footer.sitemap}
               </h4>
               <ul className="mt-4 space-y-2.5">
                 {siteMapLinks.map((link) => (
@@ -118,10 +119,10 @@ export const Footer: React.FC<FooterProps> = ({
             {/* Kolom Kontak (Teks Bersih Sederhana Tanpa Border, Tanpa Ikon & Tanpa Title) */}
             <div>
               <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-brass dark:text-parchment">
-                Kontak
+                {t.footer.contact}
               </h4>
               <ul className="mt-4 space-y-2.5">
-                {/* Email dengan Tombol Salin Cepat */}
+                {/* Email */}
                 <li>
                   <a
                     href={mailHref}
@@ -150,7 +151,7 @@ export const Footer: React.FC<FooterProps> = ({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs font-mono tracking-wider text-parchment-dim hover:text-brass transition-colors inline-block"
-                    title="Hubungi via WhatsApp"
+                    title="WhatsApp"
                   >
                     {phone}
                   </a>
@@ -170,15 +171,15 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Separator Garis Batas Bawah */}
         <div className="border-t border-brass/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs font-mono text-parchment-dim text-center sm:text-left">
-            © {new Date().getFullYear()} {profile.name || 'Muhammad Dzikry Fikry'}. Seluruh hak cipta dilindungi.
+            © {new Date().getFullYear()} {profile.name || 'Muhammad Dzikry Fikry'}. {t.footer.rights}
           </p>
 
           <button
             onClick={scrollToTop}
             className="inline-flex items-center gap-2 text-xs font-mono tracking-wider text-parchment-dim hover:text-brass transition-colors group cursor-pointer"
-            aria-label="Kembali ke atas"
+            aria-label={t.footer.backToTop}
           >
-            <span>KEMBALI KE ATAS</span>
+            <span>{t.footer.backToTop}</span>
             <ArrowUp className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
           </button>
         </div>

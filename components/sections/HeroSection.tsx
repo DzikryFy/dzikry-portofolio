@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { HeroPortrait } from '@/components/celestial/HeroPortrait';
 import { Profile } from '@/types';
 import { ArrowRight, Mail } from 'lucide-react';
+import { useLanguage } from '@/components/i18n/LanguageProvider';
 
 interface HeroSectionProps {
   profile: Profile;
@@ -12,16 +13,13 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
+  const { t, language } = useLanguage();
+
   const emailTarget =
     profile.socialLinks?.email || 'm.dzikryfikry@gmail.com';
   const mailtoHref = emailTarget.startsWith('mailto:')
     ? emailTarget
     : `mailto:${emailTarget}`;
-
-  const githubUrl = profile.socialLinks?.github || 'https://github.com/DzikryFy';
-  const linkedinUrl =
-    profile.socialLinks?.linkedin ||
-    'https://www.linkedin.com/in/muhammad-dzikry-fikry';
 
   const handleExploreProjects = async () => {
     const confetti = (await import('canvas-confetti')).default;
@@ -33,6 +31,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
       ticks: 180,
     });
   };
+
+  const bioParagraphs =
+    language === 'en'
+      ? t.hero.bio
+      : profile.bio && profile.bio.length > 0
+      ? profile.bio
+      : t.hero.bio;
 
   return (
     <section
@@ -67,23 +72,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
                 {profile.name}
               </h1>
               <p className="font-serif text-sm sm:text-base font-semibold tracking-[0.25em] uppercase text-brass dark:text-brass-light">
-                {profile.title || 'Software Engineer & Web Developer'}
+                {profile.title || t.hero.role}
               </p>
             </div>
 
-            {/* Narasi Biografi Tentang Saya (Lugas & Autentik) */}
+            {/* Narasi Biografi Tentang Saya (Multilingual) */}
             <div className="space-y-3 text-base sm:text-lg text-parchment-dim font-sans leading-relaxed max-w-xl">
-              {profile.bio && profile.bio.length > 0 ? (
-                profile.bio.map((para, idx) => (
-                  <p key={idx} className="relative pl-4 border-l-2 border-brass/40">
-                    {para}
-                  </p>
-                ))
-              ) : (
-                <p className="relative pl-4 border-l-2 border-brass/40">
-                  Hello, Saya Muhammad Dzikry Fikry, seorang Software Engineer &amp; Web Developer yang berfokus pada pengembangan sistem web full-stack, integrasi CMS modern, serta arsitektur backend yang rapi dan terukur.
+              {bioParagraphs.map((para, idx) => (
+                <p key={idx} className="relative pl-4 border-l-2 border-brass/40">
+                  {para}
                 </p>
-              )}
+              ))}
             </div>
 
             {/* Tombol Aksi (Kapsul Melengkung Halus & Kontras Tinggi) */}
@@ -93,7 +92,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
                 onClick={handleExploreProjects}
                 className="group inline-flex items-center justify-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full border border-brass bg-brass text-white dark:text-void-950 font-mono text-xs sm:text-sm font-bold uppercase tracking-widest hover:bg-brass-light transition-all duration-200 shadow-brass-glow active:scale-95"
               >
-                <span>LIHAT PROYEK</span>
+                <span>{t.hero.btnProjects}</span>
                 <ArrowRight className="w-4 h-4 sm:w-4.5 sm:h-4.5 transition-transform group-hover:translate-x-1" />
               </Link>
 
@@ -102,7 +101,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
                 className="inline-flex items-center justify-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full border border-brass/50 bg-white dark:bg-black text-slate-900 dark:text-parchment font-mono text-xs sm:text-sm font-bold uppercase tracking-widest hover:border-brass hover:text-brass transition-all duration-200 shadow-sm dark:shadow-md dark:shadow-black active:scale-95"
               >
                 <Mail className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-brass" />
-                <span>HUBUNGI SAYA</span>
+                <span>{t.hero.btnContact}</span>
               </a>
             </div>
           </div>
