@@ -71,14 +71,14 @@ export default async function HomePage() {
         {/* Bagian 01: Proyek Unggulan */}
         <ProjectsSection projects={data.projects} />
 
-        {/* Bagian Interaktif: Kalender Kontribusi & Aktivitas GitHub */}
-        <GitHubContributionsSection initialData={githubContributions} />
-
         {/* Bagian 02: Pengalaman & Pendidikan */}
         <TimelineSection
           experiences={data.experiences}
           educations={data.educations}
         />
+
+        {/* Bagian Interaktif: Kalender Kontribusi & Aktivitas GitHub (Di Bawah Pengalaman & Pendidikan) */}
+        <GitHubContributionsSection initialData={githubContributions} />
       </main>
 
       {/* 4. Occlusion Layer Footer (Z-20, Solid Dynamic Occlusion) */}
