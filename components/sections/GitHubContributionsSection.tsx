@@ -158,16 +158,17 @@ export const GitHubContributionsSection: React.FC<GitHubContributionsSectionProp
             </div>
           </div>
 
-          {/* Area Grid Scrollable Luas & Proporsional */}
-          <div className="relative overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-brass/25 scrollbar-track-transparent">
-            <div className="min-w-[950px] sm:min-w-[1100px] lg:min-w-[1180px] select-none py-1">
+          {/* Area Grid Kontribusi (Fluid Responsive: Fit 100% pada Desktop/Laptop Tanpa Scrollbar!) */}
+          <div className="relative w-full overflow-x-auto md:overflow-x-visible pb-1 md:pb-0 scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] select-none">
+            <div className="min-w-[650px] md:min-w-0 w-full py-1">
               {/* Baris Nama Bulan (Tepat di Atas Kolom Pekan Terkait) */}
-              <div className="flex items-center mb-2.5 pl-8 sm:pl-9 text-xs font-mono text-slate-500 dark:text-parchment-dim h-5">
-                <div className="flex items-center gap-1.5 sm:gap-[6px]">
+              <div className="flex items-center mb-2 sm:mb-2.5 text-xs font-mono text-slate-500 dark:text-parchment-dim h-5 w-full">
+                <div className="w-6 sm:w-7 shrink-0" />
+                <div className="flex-1 flex items-center justify-between gap-[2.5px] sm:gap-[3.5px] md:gap-1 w-full">
                   {weeks.map((_, wIdx) => {
                     const header = monthHeaders.find((m) => m.weekIndex === wIdx);
                     return (
-                      <div key={wIdx} className="w-3.5 sm:w-4 md:w-[17px] relative">
+                      <div key={wIdx} className="flex-1 relative">
                         {header && (
                           <span className="absolute left-0 top-0 whitespace-nowrap font-medium text-slate-600 dark:text-parchment-dim text-[11px] sm:text-xs">
                             {header.label}
@@ -179,35 +180,35 @@ export const GitHubContributionsSection: React.FC<GitHubContributionsSectionProp
                 </div>
               </div>
 
-              {/* Grid 7 Baris Hari x 53 Kolom Pekan (Ukuran Lebih Besar & Proporsional) */}
-              <div className="flex items-start gap-2">
-                {/* Kolom Label Hari (Mon/Sen, Wed/Rab, Fri/Jum) */}
-                <div className="flex flex-col gap-1.5 sm:gap-[6px] w-6 sm:w-7 text-[10px] sm:text-[11px] font-mono text-slate-400 dark:text-parchment-dim/60">
-                  <span className="h-3.5 sm:h-4 md:h-[17px] flex items-center justify-end pr-1 opacity-0">Sun</span>
-                  <span className="h-3.5 sm:h-4 md:h-[17px] flex items-center justify-end pr-1">
+              {/* Grid 7 Baris Hari x 53 Kolom Pekan */}
+              <div className="flex items-stretch gap-1.5 sm:gap-2 w-full">
+                {/* Kolom Label Hari (Mon/Sen, Wed/Rab, Fri/Jum) - Selaras vertikal dengan baris sel */}
+                <div className="flex flex-col gap-[2.5px] sm:gap-[3.5px] md:gap-1 w-6 sm:w-7 shrink-0 text-[10px] sm:text-[11px] font-mono text-slate-400 dark:text-parchment-dim/60 select-none">
+                  <div className="flex-1 flex items-center justify-end pr-1 opacity-0 pointer-events-none">Sun</div>
+                  <div className="flex-1 flex items-center justify-end pr-1">
                     {language === 'en' ? 'Mon' : 'Sen'}
-                  </span>
-                  <span className="h-3.5 sm:h-4 md:h-[17px] flex items-center justify-end pr-1 opacity-0">Tue</span>
-                  <span className="h-3.5 sm:h-4 md:h-[17px] flex items-center justify-end pr-1">
+                  </div>
+                  <div className="flex-1 flex items-center justify-end pr-1 opacity-0 pointer-events-none">Tue</div>
+                  <div className="flex-1 flex items-center justify-end pr-1">
                     {language === 'en' ? 'Wed' : 'Rab'}
-                  </span>
-                  <span className="h-3.5 sm:h-4 md:h-[17px] flex items-center justify-end pr-1 opacity-0">Thu</span>
-                  <span className="h-3.5 sm:h-4 md:h-[17px] flex items-center justify-end pr-1">
+                  </div>
+                  <div className="flex-1 flex items-center justify-end pr-1 opacity-0 pointer-events-none">Thu</div>
+                  <div className="flex-1 flex items-center justify-end pr-1">
                     {language === 'en' ? 'Fri' : 'Jum'}
-                  </span>
-                  <span className="h-3.5 sm:h-4 md:h-[17px] flex items-center justify-end pr-1 opacity-0">Sat</span>
+                  </div>
+                  <div className="flex-1 flex items-center justify-end pr-1 opacity-0 pointer-events-none">Sat</div>
                 </div>
 
-                {/* Kolom-Kolom Pekan (Weeks) */}
-                <div className="flex items-center gap-1.5 sm:gap-[6px]">
+                {/* Kolom-Kolom Pekan (53 Weeks) - Mengisi 100% Lebar Kontainer secara Proporsional & Tetap Besar */}
+                <div className="flex-1 flex items-center justify-between gap-[2.5px] sm:gap-[3.5px] md:gap-1 w-full">
                   {weeks.map((week, wIdx) => (
-                    <div key={wIdx} className="flex flex-col gap-1.5 sm:gap-[6px]">
+                    <div key={wIdx} className="flex-1 flex flex-col gap-[2.5px] sm:gap-[3.5px] md:gap-1">
                       {week.map((day, dIdx) => {
                         if (!day) {
                           return (
                             <div
                               key={dIdx}
-                              className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-[17px] md:h-[17px] rounded-[3px] sm:rounded-[4px] opacity-0"
+                              className="w-full aspect-square opacity-0 pointer-events-none"
                             />
                           );
                         }
@@ -224,7 +225,7 @@ export const GitHubContributionsSection: React.FC<GitHubContributionsSectionProp
                               });
                             }}
                             onMouseLeave={() => setHoveredCell(null)}
-                            className={`w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-[17px] md:h-[17px] rounded-[3px] sm:rounded-[4px] transition-transform duration-150 cursor-pointer hover:scale-125 hover:z-30 hover:ring-2 hover:ring-brass/80 ${getCellColor(
+                            className={`w-full aspect-square rounded-[2px] sm:rounded-[3px] md:rounded-[3.5px] transition-transform duration-150 cursor-pointer relative hover:scale-125 hover:z-30 hover:ring-2 hover:ring-brass/80 ${getCellColor(
                               day.level
                             )}`}
                           />
@@ -234,26 +235,26 @@ export const GitHubContributionsSection: React.FC<GitHubContributionsSectionProp
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
 
-              {/* Footer Kalender: Total & Legenda Less/More */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5 pt-3.5 border-t border-brass/10 text-xs sm:text-sm font-mono text-slate-500 dark:text-parchment-dim">
-                <div>
-                  <span className="font-semibold text-slate-800 dark:text-parchment">
-                    {data.totalContributions} {language === 'en' ? 'contributions' : 'kontribusi'}
-                  </span>{' '}
-                  {language === 'en' ? 'in the last year' : 'dalam setahun terakhir'}
-                </div>
+          {/* Footer Kalender: Total & Legenda Less/More (Di Luar Scroll Container agar Tidak Terpotong) */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5 pt-3.5 border-t border-brass/10 text-xs sm:text-sm font-mono text-slate-500 dark:text-parchment-dim select-none">
+            <div>
+              <span className="font-semibold text-slate-800 dark:text-parchment">
+                {data.totalContributions} {language === 'en' ? 'contributions' : 'kontribusi'}
+              </span>{' '}
+              {language === 'en' ? 'in the last year' : 'dalam setahun terakhir'}
+            </div>
 
-                <div className="flex items-center gap-2 self-end sm:self-auto text-xs font-mono">
-                  <span>{t.github.less}</span>
-                  <span className="w-3.5 h-3.5 rounded-[3px] bg-slate-200/80 dark:bg-[#161B22] border border-slate-300/40 dark:border-white/[0.05]" />
-                  <span className="w-3.5 h-3.5 rounded-[3px] bg-[#0e4429] border border-[#006d32]/40" />
-                  <span className="w-3.5 h-3.5 rounded-[3px] bg-[#006d32] border border-[#26a641]/40" />
-                  <span className="w-3.5 h-3.5 rounded-[3px] bg-[#26a641] border border-[#39d353]/50" />
-                  <span className="w-3.5 h-3.5 rounded-[3px] bg-[#39d353] border border-[#39d353]" />
-                  <span>{t.github.more}</span>
-                </div>
-              </div>
+            <div className="flex items-center gap-2 self-end sm:self-auto text-xs font-mono">
+              <span>{t.github.less}</span>
+              <span className="w-3.5 h-3.5 rounded-[3px] bg-slate-200/80 dark:bg-[#161B22] border border-slate-300/40 dark:border-white/[0.05]" />
+              <span className="w-3.5 h-3.5 rounded-[3px] bg-[#0e4429] border border-[#006d32]/40" />
+              <span className="w-3.5 h-3.5 rounded-[3px] bg-[#006d32] border border-[#26a641]/40" />
+              <span className="w-3.5 h-3.5 rounded-[3px] bg-[#26a641] border border-[#39d353]/50" />
+              <span className="w-3.5 h-3.5 rounded-[3px] bg-[#39d353] border border-[#39d353]" />
+              <span>{t.github.more}</span>
             </div>
           </div>
         </motion.div>
