@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Github, Linkedin, MessageCircle, X } from 'lucide-react';
 import { Profile } from '@/types';
+import { useLanguage } from '@/components/i18n/LanguageProvider';
 
 interface FloatingSocialDockProps {
   profile?: Profile;
@@ -23,6 +24,10 @@ const WhatsAppIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' 
 );
 
 export const FloatingSocialDock: React.FC<FloatingSocialDockProps> = ({ profile }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dockRef = useRef<HTMLDivElement>(null);
+  const { language } = useLanguage();
+
   const emailTarget = profile?.socialLinks?.email || 'm.dzikryfikry@gmail.com';
   const mailtoHref = emailTarget.startsWith('mailto:')
     ? emailTarget
@@ -37,12 +42,24 @@ export const FloatingSocialDock: React.FC<FloatingSocialDockProps> = ({ profile 
   const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
   const whatsappUrl = `https://wa.me/${cleanPhone}`;
 
+  // Tutup dock jika user mengklik area luar
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dockRef.current && !dockRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('mousedown', handleClickOutside);
+    return () => window.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
   const socialItems = [
     {
       name: 'Email',
       href: mailtoHref,
       icon: <Mail className="w-4 h-4 text-brass" />,
-      tooltip: 'm.dzikryfikry@gmail.com',
+      tooltip: emailTarget,
       isExternal: false,
     },
     {
@@ -63,37 +80,89 @@ export const FloatingSocialDock: React.FC<FloatingSocialDockProps> = ({ profile 
       name: 'WhatsApp',
       href: whatsappUrl,
       icon: <WhatsAppIcon className="w-4 h-4 text-emerald-500" />,
-      tooltip: 'WhatsApp: +62 812-8838-9457',
+      tooltip: rawPhone,
       isExternal: true,
     },
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed bottom-14 md:bottom-16 right-3 md:right-4 z-40 flex items-center gap-1.5 p-1.5 rounded-full bg-white/90 dark:bg-void-950/90 border border-slate-200/90 dark:border-brass/35 shadow-lg shadow-black/10 dark:shadow-black/50 backdrop-blur-md select-none transition-colors"
-      aria-label="Tautan Sosial Cepat"
+    <div
+      ref={dockRef}
+      className="fixed bottom-14 md:bottom-16 right-3 md:right-4 z-40 select-none"
     >
-      {socialItems.map((item) => (
-        <a
-          key={item.name}
-          href={item.href}
-          target={item.isExternal ? '_blank' : undefined}
-          rel={item.isExternal ? 'noopener noreferrer' : undefined}
-          className="group relative w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full flex items-center justify-center text-slate-700 dark:text-parchment hover:text-brass dark:hover:text-brass-light hover:bg-brass/10 border border-transparent hover:border-brass/30 transition-all duration-200 active:scale-95"
-          aria-label={item.name}
-          title={item.tooltip}
-        >
-          {item.icon}
+      <AnimatePresence mode="wait">
+        {!isOpen ? (
+          /* Tombol Tunggal Mengambang (Collapsed Mode) */
+          <motion.button
+            key="collapsed-fab"
+            type="button"
+            onClick={() => setIsOpen(true)}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            className="group relative w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-brass/40 bg-white/90 dark:bg-void-950/90 text-brass hover:text-brass-light hover:border-brass hover:shadow-brass-glow shadow-xl shadow-black/30 backdrop-blur-md flex items-center justify-center transition-all duration-300 cursor-pointer"
+            aria-label="Buka Menu Kontak & Sosial"
+          >
+            <MessageCircle className="w-5 h-5 text-brass group-hover:scale-110 transition-transform duration-200" />
 
-          {/* Floating Tooltip di Atas Tombol */}
-          <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-150 px-2 py-0.5 rounded bg-void-950 text-parchment border border-brass/30 text-[10px] font-mono whitespace-nowrap shadow-md z-50">
-            {item.name}
-          </span>
-        </a>
-      ))}
-    </motion.div>
+            {/* Indikator Status Aktif Berkedip */}
+            <span className="absolute top-0.5 right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-void-950 animate-pulse" />
+
+            {/* Floating Tooltip saat Hover Tombol Tunggal */}
+            <span className="pointer-events-none absolute -top-8 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150 px-2.5 py-0.5 rounded bg-void-950 text-parchment border border-brass/35 text-[11px] font-mono whitespace-nowrap shadow-md z-50">
+              {language === 'en' ? 'Quick Contact' : 'Kontak Cepat'}
+            </span>
+          </motion.button>
+        ) : (
+          /* Kapsul Dock Terbuka (Expanded Mode: Menampilkan 4 Ikon Sosial + Tombol Tutup) */
+          <motion.div
+            key="expanded-dock"
+            initial={{ opacity: 0, scale: 0.85, x: 20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.85, x: 20 }}
+            transition={{ type: 'spring', stiffness: 450, damping: 28 }}
+            className="flex items-center gap-1.5 p-1.5 rounded-full bg-white/95 dark:bg-void-950/95 border border-slate-200/90 dark:border-brass/40 shadow-2xl shadow-black/40 backdrop-blur-md transition-colors"
+            aria-label="Menu Tautan Sosial Cepat"
+          >
+            {socialItems.map((item, idx) => (
+              <motion.a
+                key={item.name}
+                href={item.href}
+                target={item.isExternal ? '_blank' : undefined}
+                rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: idx * 0.04 }}
+                className="group relative w-8.5 h-8.5 rounded-full flex items-center justify-center text-slate-700 dark:text-parchment hover:text-brass dark:hover:text-brass-light hover:bg-brass/10 border border-transparent hover:border-brass/30 transition-all duration-200 active:scale-95 cursor-pointer"
+                aria-label={item.name}
+              >
+                {item.icon}
+
+                {/* Floating Tooltip di Atas Tiap Ikon */}
+                <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-150 px-2 py-0.5 rounded bg-void-950 text-parchment border border-brass/30 text-[10px] font-mono whitespace-nowrap shadow-md z-50">
+                  {item.name}
+                </span>
+              </motion.a>
+            ))}
+
+            {/* Separator Halus Sebelum Tombol Tutup */}
+            <div className="w-px h-4 bg-brass/25 mx-0.5" />
+
+            {/* Tombol Tutup (X) */}
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="w-8 h-8 rounded-full flex items-center justify-center text-parchment-dim hover:text-brass hover:bg-brass/15 border border-transparent hover:border-brass/30 transition-all duration-200 active:scale-90 cursor-pointer"
+              aria-label="Tutup menu sosial"
+              title={language === 'en' ? 'Close' : 'Tutup'}
+            >
+              <X className="w-4 h-4 text-brass" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };

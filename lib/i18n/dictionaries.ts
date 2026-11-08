@@ -217,9 +217,9 @@ export const dictionaries: Record<Language, Dictionary> = {
       title: 'FEATURED PROJECTS',
       subtitle: 'Curated collection of modern web applications and software systems I have built.',
       viewAll: 'VIEW ALL PROJECTS',
-      btnDemo: 'LIVE DEMO',
-      btnCode: 'SOURCE CODE',
-      btnDetail: 'DETAILS',
+      btnDemo: 'DEMO',
+      btnCode: 'CODE',
+      btnDetail: 'DETAIL',
       items: {
         'portal-yayasan-asih-putera': {
           title: 'Yayasan Asih Putera Web Portal',

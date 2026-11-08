@@ -171,18 +171,18 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           )}
 
           {/* Tautan Aksi: DEMO, KODE, & DETAIL */}
-          <div className="pt-2 border-t border-brass/20 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
+          <div className="pt-2 border-t border-brass/20 flex items-center justify-between gap-2 select-none">
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               {showDemo && (
                 <a
                   href={project.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brass hover:bg-brass-light text-void-950 text-xs font-mono font-bold tracking-wider transition-colors shadow-sm active:scale-95"
+                  className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-brass hover:bg-brass-light text-void-950 text-[11px] sm:text-xs font-mono font-bold tracking-wider transition-colors shadow-sm active:scale-95 whitespace-nowrap shrink-0"
                   title={t.projects.btnDemo}
                 >
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                   <span>{t.projects.btnDemo}</span>
                 </a>
               )}
@@ -193,10 +193,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-brass/40 bg-void-900/80 hover:bg-brass/20 text-parchment text-xs font-mono font-bold tracking-wider transition-colors active:scale-95"
+                  className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full border border-brass/40 bg-void-900/80 hover:bg-brass/20 text-parchment text-[11px] sm:text-xs font-mono font-bold tracking-wider transition-colors active:scale-95 whitespace-nowrap shrink-0"
                   title={t.projects.btnCode}
                 >
-                  <Github className="w-3.5 h-3.5 text-brass" />
+                  <Github className="w-3.5 h-3.5 text-brass shrink-0" />
                   <span>{t.projects.btnCode}</span>
                 </a>
               )}
@@ -208,11 +208,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 e.stopPropagation();
                 onSelect?.(project);
               }}
-              className="inline-flex items-center gap-1 text-[11px] font-mono text-parchment-dim hover:text-brass transition-colors uppercase tracking-wider ml-auto"
+              className="inline-flex items-center gap-1 text-[11px] font-mono text-parchment-dim hover:text-brass transition-colors uppercase tracking-wider ml-auto whitespace-nowrap shrink-0"
               title={t.projects.btnDetail}
             >
               <span>{t.projects.btnDetail}</span>
-              <Maximize2 className="w-3 h-3 text-brass" />
+              <Maximize2 className="w-3 h-3 text-brass shrink-0" />
             </button>
           </div>
         </div>
