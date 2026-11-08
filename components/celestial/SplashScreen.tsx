@@ -97,6 +97,26 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
 
     let width = window.innerWidth;
     let height = window.innerHeight;
+    let lightGlow: CanvasGradient;
+    let darkGlow: CanvasGradient;
+
+    const buildGradients = (w: number, h: number) => {
+      const cx = w * 0.5;
+      const cy = h * 0.5;
+      const mr = Math.hypot(w, h) * 0.78;
+
+      lightGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, mr);
+      lightGlow.addColorStop(0, 'rgba(224, 242, 254, 0.75)');
+      lightGlow.addColorStop(0.35, 'rgba(240, 249, 255, 0.45)');
+      lightGlow.addColorStop(0.7, 'rgba(248, 250, 252, 0.25)');
+      lightGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+      darkGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, mr);
+      darkGlow.addColorStop(0, 'rgba(12, 24, 48, 0.85)');
+      darkGlow.addColorStop(0.35, 'rgba(8, 14, 28, 0.6)');
+      darkGlow.addColorStop(0.7, 'rgba(5, 8, 17, 0.3)');
+      darkGlow.addColorStop(1, 'rgba(3, 5, 9, 0)');
+    };
 
     const handleResize = () => {
       if (!canvas) return;
@@ -106,12 +126,14 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.scale(dpr, dpr);
+      buildGradients(width, height);
     };
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = width * dpr;
     canvas.height = height * dpr;
     ctx.scale(dpr, dpr);
+    buildGradients(width, height);
 
     window.addEventListener('resize', handleResize);
 
@@ -119,7 +141,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
     // GENERATE CONCENTRIC STAR TRAILS (ORB MOTIF)
     // ==========================================
     const maxRadius = Math.hypot(width, height) * 0.78;
-    const TRAIL_COUNT = width < 768 ? 140 : 340;
+    const TRAIL_COUNT = width < 768 ? 85 : 340;
 
     interface StarTrail {
       r: number;
@@ -185,9 +207,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
       const dt = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
 
-      // Kecepatan putaran bintang konsentris mengelilingi titik pusat ke arah KIRI (Counter-Clockwise)
-      // Saat tombol dipencet, akselerasi warp melesat kencang berputar ke arah KIRI
-      rotationAngle -= dt * 0.045 * speedMultiplierRef.current;
+      // Kecepatan putaran bintang konsentris mengelilingi titik pusat searah jarum jam (Clockwise)
+      // Saat tombol dipencet, akselerasi warp melesat kencang searah jarum jam
+      rotationAngle += dt * 0.045 * speedMultiplierRef.current;
 
       const centerX = width * 0.5;
       const centerY = height * 0.5;
@@ -201,39 +223,19 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, width, height);
 
-        const skyGlow = ctx.createRadialGradient(
-          centerX,
-          centerY,
-          0,
-          centerX,
-          centerY,
-          maxRadius
-        );
-        skyGlow.addColorStop(0, 'rgba(224, 242, 254, 0.75)'); // Azure ice core
-        skyGlow.addColorStop(0.35, 'rgba(240, 249, 255, 0.45)');
-        skyGlow.addColorStop(0.7, 'rgba(248, 250, 252, 0.25)');
-        skyGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        ctx.fillStyle = skyGlow;
-        ctx.fillRect(0, 0, width, height);
+        if (lightGlow) {
+          ctx.fillStyle = lightGlow;
+          ctx.fillRect(0, 0, width, height);
+        }
       } else {
         // Mode Gelap: Latar Kosmis Hitam Pekat dengan Inti Biru Dongker
         ctx.fillStyle = '#030509';
         ctx.fillRect(0, 0, width, height);
 
-        const skyGlow = ctx.createRadialGradient(
-          centerX,
-          centerY,
-          0,
-          centerX,
-          centerY,
-          maxRadius
-        );
-        skyGlow.addColorStop(0, 'rgba(12, 24, 48, 0.85)');
-        skyGlow.addColorStop(0.35, 'rgba(8, 14, 28, 0.6)');
-        skyGlow.addColorStop(0.7, 'rgba(5, 8, 17, 0.3)');
-        skyGlow.addColorStop(1, 'rgba(3, 5, 9, 0)');
-        ctx.fillStyle = skyGlow;
-        ctx.fillRect(0, 0, width, height);
+        if (darkGlow) {
+          ctx.fillStyle = darkGlow;
+          ctx.fillRect(0, 0, width, height);
+        }
       }
 
       // 2. Gambar Ratusan Jejak Bintang Konsentris (Circular Star Trails)
@@ -408,7 +410,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
               ? {
                   x: [450, 395, 335, 275, 215, 155, 95, 40, -35, -120],
                   y: [195, 235, 253, 263, 264, 260, 249, 230, 195, 150],
-                  rotate: [0, -60, -130, -210, -300, -390, -470, -540, -610, -680],
+                  rotate: [0, 60, 130, 210, 300, 390, 470, 540, 610, 680],
                   scale: [1, 1.08, 1.12, 1.12, 1.1, 1.05, 0.98, 0.88, 0.7, 0.45],
                   opacity: [1, 1, 1, 1, 1, 0.95, 0.9, 0.7, 0.3, 0],
                   transition: {
@@ -420,7 +422,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
               : {
                   x: 450,
                   y: 195,
-                  rotate: [0, -360],
+                  rotate: [0, 360],
                   scale: 1,
                   opacity: 1,
                   transition: {

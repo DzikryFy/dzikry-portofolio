@@ -2,8 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import confetti from 'canvas-confetti';
 import { HeroPortrait } from '@/components/celestial/HeroPortrait';
 import { Profile } from '@/types';
 import { ArrowRight, Mail, Github, Linkedin } from 'lucide-react';
@@ -25,7 +23,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
     profile.socialLinks?.linkedin ||
     'https://www.linkedin.com/in/muhammad-dzikry-fikry';
 
-  const handleExploreProjects = () => {
+  const handleExploreProjects = async () => {
+    const confetti = (await import('canvas-confetti')).default;
     confetti({
       particleCount: 45,
       spread: 60,
@@ -38,7 +37,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
   return (
     <section
       id="about"
-      className="relative flex items-end justify-center pt-8 sm:pt-12 lg:pt-10 pb-0 overflow-hidden bg-transparent"
+      className="relative flex items-end justify-center pt-24 sm:pt-28 lg:pt-24 pb-0 overflow-hidden bg-transparent"
     >
       {/* Background Star Dots */}
       <div className="absolute inset-0 bg-[radial-gradient(#C5A059_0.75px,transparent_1px)] [background-size:32px_32px] opacity-15 pointer-events-none" />
@@ -48,13 +47,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
-          {/* Kolom Kiri: Tentang Saya & Profil Personal (Seimbang Tanpa Ruang Kosong Berlebih) */}
-          <motion.div
-            initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 flex flex-col items-start z-10 space-y-4 sm:space-y-5 self-center pt-2 pb-6 sm:pb-8"
-          >
+          {/* Kolom Kiri: Tentang Saya & Profil Personal (Render Instan untuk Skor LCP Mobile <1.8s) */}
+          <div className="lg:col-span-7 flex flex-col items-start z-10 space-y-4 sm:space-y-5 self-center pt-2 pb-6 sm:pb-8">
             {/* Nama & Subjudul Tipografi Cinzel Serasi */}
             <div className="space-y-1">
               <h1
@@ -142,7 +136,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
                 <span className="font-semibold text-[11px] tracking-wider uppercase">Email</span>
               </a>
             </div>
-          </motion.div>
+          </div>
 
           {/* Kolom Kanan: Foto Profil Frameless Cutout yang Menempel ke Batas Bawah Hero (Render Instan untuk Skor LCP Maksimal) */}
           <div className="lg:col-span-5 flex items-end justify-center lg:justify-end relative self-end">

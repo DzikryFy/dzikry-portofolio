@@ -61,7 +61,7 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
     // 1. GENERATE MILKY WAY GALAXY PARTICLES
     // ==========================================
     const isMobile = width < 768;
-    const STAR_COUNT = mode === 'fullscreen' ? (isMobile ? 320 : 600) : (isMobile ? 180 : 350);
+    const STAR_COUNT = mode === 'fullscreen' ? (isMobile ? 180 : 600) : (isMobile ? 120 : 350);
     interface Star {
       x: number;
       y: number;
@@ -325,10 +325,12 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
     let lastTelemetryUpdate = 0;
     let galaxyRotation = 0;
 
-    // Periksa apakah splash screen sedang aktif menutup layar
-    let isPaused =
-      typeof document !== 'undefined' &&
-      Boolean(document.getElementById('splash-screen-root'));
+    // Di awal kunjungan, selalu jeda simulasi MilkyWayGalaxy saat layar tertutup Splash Screen.
+    // Animasi latar belakang hanya mulai aktif begitu tombol JELAJAHI diklik (event 'splash-dismissed').
+    let isPaused = true;
+    if (typeof window !== 'undefined' && sessionStorage.getItem('skip_splash') === 'true') {
+      isPaused = false;
+    }
 
     const handleResume = () => {
       if (isPaused) {
