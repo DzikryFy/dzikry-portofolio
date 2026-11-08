@@ -94,7 +94,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           {/* Kolom Kanan: 2 Kolom (Site Map & Kontak) (Span 6 Kolom) */}
-          <div className="lg:col-span-6 grid grid-cols-2 gap-8 sm:gap-12">
+          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
             {/* Kolom Site Map */}
             <div>
               <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-brass dark:text-parchment">
@@ -124,7 +124,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <li>
                   <a
                     href={mailHref}
-                    className="text-xs font-mono tracking-wider text-parchment-dim hover:text-brass transition-colors inline-block"
+                    className="text-xs font-mono tracking-wider text-parchment-dim hover:text-brass transition-colors inline-block break-all sm:break-normal"
                   >
                     {email}
                   </a>
@@ -136,7 +136,7 @@ export const Footer: React.FC<FooterProps> = ({
                     href={githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono tracking-wider text-parchment-dim hover:text-brass transition-colors inline-block"
+                    className="text-xs font-mono tracking-wider text-parchment-dim hover:text-brass transition-colors inline-block break-all sm:break-normal"
                   >
                     {githubDisplay}
                   </a>
