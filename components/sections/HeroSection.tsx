@@ -15,12 +15,6 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
   const { t, language } = useLanguage();
 
-  const emailTarget =
-    profile.socialLinks?.email || 'm.dzikryfikry@gmail.com';
-  const mailtoHref = emailTarget.startsWith('mailto:')
-    ? emailTarget
-    : `mailto:${emailTarget}`;
-
   const handleExploreProjects = async () => {
     const confetti = (await import('canvas-confetti')).default;
     confetti({
@@ -30,6 +24,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
       colors: ['#C5A059', '#E6CA7E', '#7DD3FC', '#EDE7D8'],
       ticks: 180,
     });
+  };
+
+  const scrollToFooter = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const footer = document.getElementById('footer');
+    if (footer) {
+      footer.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
   };
 
   const bioParagraphs =
@@ -97,8 +101,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
               </Link>
 
               <a
-                href={mailtoHref}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full border border-brass/50 bg-white dark:bg-black text-slate-900 dark:text-parchment font-mono text-xs sm:text-sm font-bold uppercase tracking-widest hover:border-brass hover:text-brass transition-all duration-200 shadow-sm dark:shadow-md dark:shadow-black active:scale-95"
+                href="#footer"
+                onClick={scrollToFooter}
+                className="inline-flex items-center justify-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full border border-brass/50 bg-white dark:bg-black text-slate-900 dark:text-parchment font-mono text-xs sm:text-sm font-bold uppercase tracking-widest hover:border-brass hover:text-brass transition-all duration-200 shadow-sm dark:shadow-md dark:shadow-black active:scale-95 cursor-pointer"
               >
                 <Mail className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-brass" />
                 <span>{t.hero.btnContact}</span>
