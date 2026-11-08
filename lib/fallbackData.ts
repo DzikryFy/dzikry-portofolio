@@ -91,9 +91,9 @@ export const fallbackPortfolioData: PortfolioData = {
       isCurrent: false,
       description: 'Menjalani Praktik Kerja Lapangan (PKL) selama 4 bulan yang berfokus pada Quality Assurance (QA) web, modernisasi tampilan produk perusahaan (Onebox), dan pembangunan portal yayasan berbasis Next.js.',
       highlights: [
-        'Membangun Portal Yayasan Asih Putera menggunakan Next.js yang diintegrasikan dengan headless CMS internal perusahaan melalui REST API.',
-        'Melakukan pembaruan dan redesign antarmuka (UI/UX) web untuk salah satu produk digital utama PT Ciptadra Softindo, yaitu Onebox.',
-        'Melakukan pengujian Quality Assurance (QA) web secara berkala untuk memastikan keandalan fungsi, responsivitas antarmuka, dan validitas alur kerja sistem.'
+        'Membangun dan merilis Portal Yayasan Asih Putera berbasis Next.js App Router & Tailwind CSS, terintegrasi mulus dengan REST API headless CMS internal perusahaan.',
+        'Memodernisasi arsitektur UI/UX antarmuka produk digital Onebox, mengoptimalkan tata letak modular dan responsivitas lintas resolusi layar.',
+        'Mengeksekusi pengujian Quality Assurance (QA) fungsional berkala pada puluhan modul sistem, memvalidasi integritas data, dan mendokumentasikan laporan bug sebelum rilis produksi.'
       ],
       skills: ['Next.js', 'React', 'REST API', 'Web QA & Testing', 'UI/UX Redesign', 'Onebox', 'Tailwind CSS'],
       order: 1

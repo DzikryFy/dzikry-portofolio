@@ -94,6 +94,27 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
                       {/* Baris Header: Jabatan & Periode */}
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 pb-3 border-b border-brass/15">
                         <div>
+                          {/* Badge Kategori Pengalaman: Kerja/PKL vs Organisasi */}
+                          {(() => {
+                            const isWork = /pkl|intern|softindo|developer|engineer/i.test(`${exp.role} ${exp.company}`);
+                            return (
+                              <span
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase mb-1.5 ${
+                                  isWork
+                                    ? 'bg-sky-500/10 border border-sky-500/30 text-sky-600 dark:text-sky-400'
+                                    : 'bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400'
+                                }`}
+                              >
+                                <span
+                                  className={`w-1.5 h-1.5 rounded-full ${
+                                    isWork ? 'bg-sky-500' : 'bg-amber-500'
+                                  }`}
+                                />
+                                {isWork ? 'PENGALAMAN KERJA / PKL' : 'LEADERSHIP & ORGANISASI'}
+                              </span>
+                            );
+                          })()}
+
                           <h4 className="text-xl sm:text-2xl font-serif font-bold text-brass dark:text-parchment group-hover:text-brass-light transition-colors">
                             {exp.role}
                           </h4>

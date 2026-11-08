@@ -124,6 +124,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             {project.title}
           </h3>
 
+          {/* Micro-Badges Tech Stack (Mempermudah HRD/Lead Developer screening skill dalam 3 detik) */}
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-1.5 mt-2.5">
+              {project.tags.slice(0, 3).map((tag, i) => (
+                <span
+                  key={i}
+                  className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-brass/10 dark:bg-brass/15 border border-brass/25 text-slate-700 dark:text-brass-light tracking-wide select-none"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
           {/* Deskripsi (Hanya ditampilkan jika showDescription = true, Center) */}
           {showDescription && project.description && (
             <p className="mt-2 text-xs sm:text-sm text-parchment-dim font-sans leading-relaxed line-clamp-3 text-center">

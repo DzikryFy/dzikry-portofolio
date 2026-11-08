@@ -49,6 +49,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
           {/* Kolom Kiri: Tentang Saya & Profil Personal (Render Instan untuk Skor LCP Mobile <1.8s) */}
           <div className="lg:col-span-7 flex flex-col items-start z-10 space-y-4 sm:space-y-5 self-center pt-2 pb-6 sm:pb-8">
+            {/* Status Ketersediaan Kerja (Sinyal Positif untuk HRD & Tech Recruiter) */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-[10px] sm:text-[11px] font-mono font-semibold tracking-wider select-none shadow-sm backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span>TERBUKA UNTUK MAGANG &amp; KERJA • DEPOK / JAKARTA &amp; REMOTE</span>
+            </div>
+
             {/* Nama & Subjudul Tipografi Cinzel Serasi */}
             <div className="space-y-1">
               <h1
