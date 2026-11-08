@@ -110,7 +110,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           src={getProjectCoverImage(project, idx)}
           alt={`Cuplikan antarmuka proyek ${project.title}`}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          quality={80}
+          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 380px"
           className="w-full h-full object-cover object-center scale-100 group-hover:scale-105 transition-transform duration-500 ease-out"
         />
       </div>

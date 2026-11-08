@@ -31,6 +31,7 @@ export const HeroPortrait: React.FC<HeroPortraitProps> = ({ profile }) => {
           width={500}
           height={600}
           priority
+          quality={85}
           sizes="(max-width: 640px) 280px, (max-width: 1024px) 380px, 420px"
           onError={() => {
             if (imgSrc !== '/profile.png') {

@@ -60,7 +60,8 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
     // ==========================================
     // 1. GENERATE MILKY WAY GALAXY PARTICLES
     // ==========================================
-    const STAR_COUNT = mode === 'fullscreen' ? 1200 : 700;
+    const isMobile = width < 768;
+    const STAR_COUNT = mode === 'fullscreen' ? (isMobile ? 320 : 600) : (isMobile ? 180 : 350);
     interface Star {
       x: number;
       y: number;
@@ -324,11 +325,38 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
     let lastTelemetryUpdate = 0;
     let galaxyRotation = 0;
 
+    // Periksa apakah splash screen sedang aktif menutup layar
+    let isPaused =
+      typeof document !== 'undefined' &&
+      Boolean(document.getElementById('splash-screen-root'));
+
+    const handleResume = () => {
+      if (isPaused) {
+        isPaused = false;
+        lastTime = performance.now();
+        lastTelemetryUpdate = performance.now();
+        if (!isDestroyed) {
+          animationFrameId = requestAnimationFrame(render);
+        }
+      }
+    };
+
+    const handlePause = () => {
+      isPaused = true;
+    };
+
+    window.addEventListener('splash-dismissed', handleResume);
+    window.addEventListener('trigger-splash', handlePause);
+
     // ==========================================
     // 3. MAIN ANIMATION LOOP
     // ==========================================
     const render = (now: number) => {
       if (isDestroyed) return;
+      if (isPaused) {
+        // Jangan buang siklus CPU/GPU saat splash screen sedang menutup layar
+        return;
+      }
       const dt = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
 
@@ -1524,10 +1552,11 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
         ctx.setLineDash([]);
       }
 
-      // Update telemetry state periodically
+      // Update telemetry state periodically: hemat CPU saat idle (hanya render cepat saat bergerak)
       const isMoving = isCurrentlyScrolling || Math.abs(targetOrbitAngle - currentOrbitAngle) > 0.003;
+      const telemetryInterval = isMoving ? 350 : 1500;
 
-      if (now - lastTelemetryUpdate > 250) {
+      if (now - lastTelemetryUpdate > telemetryInterval) {
         lastTelemetryUpdate = now;
         const deg = ((((currentOrbitAngle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) * 180) / Math.PI;
         const spinDeg = ((((earthSpinAngle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) * 180) / Math.PI;
@@ -1537,12 +1566,23 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
         else if (deg >= 135 && deg < 225) seasonName = 'Ekuinoks September';
         else if (deg >= 225 && deg < 315) seasonName = 'Titik Balik Desember';
 
-        setTelemetry({
-          orbitDeg: Math.round(deg),
-          earthSpinDeg: Math.round(spinDeg),
-          season: seasonName,
-          distanceAU: '1.000 AU (149.6M km)',
-          isScrolling: isMoving,
+        setTelemetry((prev) => {
+          const roundedDeg = Math.round(deg);
+          const roundedSpin = Math.round(spinDeg);
+          if (
+            prev.orbitDeg === roundedDeg &&
+            prev.earthSpinDeg === roundedSpin &&
+            prev.isScrolling === isMoving
+          ) {
+            return prev;
+          }
+          return {
+            orbitDeg: roundedDeg,
+            earthSpinDeg: roundedSpin,
+            season: seasonName,
+            distanceAU: '1.000 AU (149.6M km)',
+            isScrolling: isMoving,
+          };
         });
       }
 
@@ -1558,6 +1598,8 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('click', onClick);
+      window.removeEventListener('splash-dismissed', handleResume);
+      window.removeEventListener('trigger-splash', handlePause);
       if (scrollTimeout) clearTimeout(scrollTimeout);
     };
   }, [mode]);

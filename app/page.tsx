@@ -1,12 +1,22 @@
+import dynamic from 'next/dynamic';
 import { getPortfolioData } from '@/lib/sanityFetch';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { TechStackSection } from '@/components/sections/TechStackSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
-import { TimelineSection } from '@/components/sections/TimelineSection';
-import { MilkyWayGalaxy } from '@/components/celestial/MilkyWayGalaxy';
 import { SplashScreen } from '@/components/celestial/SplashScreen';
+
+// Code-splitting komponen canvas dan section below-the-fold untuk memaksimalkan skor LCP & TBT
+const MilkyWayGalaxy = dynamic(
+  () => import('@/components/celestial/MilkyWayGalaxy').then((m) => m.MilkyWayGalaxy),
+  { ssr: false }
+);
+
+const TimelineSection = dynamic(
+  () => import('@/components/sections/TimelineSection').then((m) => m.TimelineSection),
+  { ssr: true }
+);
 
 export const revalidate = 3600; // ISR revalidation setiap 1 jam (atau instan via on-demand webhook)
 

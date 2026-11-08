@@ -96,6 +96,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 src={getProjectCoverImage(project, 0)}
                 alt={`Detail gambar proyek ${project.title}`}
                 fill
+                quality={80}
                 sizes="(max-width: 640px) 100vw, 672px"
                 className="w-full h-full object-cover object-center"
               />

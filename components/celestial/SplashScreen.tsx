@@ -12,9 +12,15 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
   const [isExiting, setIsExiting] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isLightMode, setIsLightMode] = useState(true); // Default mode terang
+  const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const speedMultiplierRef = useRef(1.0);
+
+  const setCanvasRef = React.useCallback((node: HTMLCanvasElement | null) => {
+    canvasRef.current = node;
+    setCanvasElement(node);
+  }, []);
 
   // Kunci scroll body saat splash screen aktif & deteksi tema aktif
   useEffect(() => {
@@ -81,9 +87,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
 
   // Animasi Concentric Star Trails di HTML5 Canvas (Mendukung Mode Terang & Gelap)
   useEffect(() => {
-    if (!isVisible) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!isVisible || !canvasElement) return;
+    const canvas = canvasElement;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -114,7 +119,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
     // GENERATE CONCENTRIC STAR TRAILS (ORB MOTIF)
     // ==========================================
     const maxRadius = Math.hypot(width, height) * 0.78;
-    const TRAIL_COUNT = width < 768 ? 280 : 450;
+    const TRAIL_COUNT = width < 768 ? 140 : 340;
 
     interface StarTrail {
       r: number;
@@ -268,7 +273,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
     };
-  }, [isVisible]);
+  }, [isVisible, canvasElement]);
 
   // Handler saat splash screen atau tombol JELAJAHI diklik
   const handleExplore = () => {
@@ -300,6 +305,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
     requestAnimationFrame(rampWarp);
 
     onExplore?.();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('splash-dismissed'));
+    }
 
     setTimeout(() => {
       document.body.style.overflow = 'unset';
@@ -313,6 +321,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
 
   return (
     <div
+      id="splash-screen-root"
       onClick={handleExplore}
       className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden select-none cursor-pointer ${
         isLightMode ? 'bg-white' : 'bg-[#030509]'
@@ -326,7 +335,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
     >
       {/* 1. Background Animasi Canvas Star Trails */}
       <canvas
-        ref={canvasRef}
+        ref={setCanvasRef}
         className="absolute inset-0 w-full h-full block pointer-events-none"
       />
 

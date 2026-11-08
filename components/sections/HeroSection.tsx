@@ -144,15 +144,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
             </div>
           </motion.div>
 
-          {/* Kolom Kanan: Foto Profil Frameless Cutout yang Menempel ke Batas Bawah Hero */}
-          <motion.div
-            initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 flex items-end justify-center lg:justify-end relative self-end"
-          >
+          {/* Kolom Kanan: Foto Profil Frameless Cutout yang Menempel ke Batas Bawah Hero (Render Instan untuk Skor LCP Maksimal) */}
+          <div className="lg:col-span-5 flex items-end justify-center lg:justify-end relative self-end">
             <HeroPortrait profile={profile} />
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
