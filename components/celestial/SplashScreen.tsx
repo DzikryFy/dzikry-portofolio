@@ -141,7 +141,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
     // GENERATE CONCENTRIC STAR TRAILS (ORB MOTIF)
     // ==========================================
     const maxRadius = Math.hypot(width, height) * 0.78;
-    const TRAIL_COUNT = width < 768 ? 85 : 340;
+    const TRAIL_COUNT = width < 768 ? 75 : 340;
 
     interface StarTrail {
       r: number;

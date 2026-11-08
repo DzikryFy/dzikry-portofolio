@@ -3,14 +3,22 @@ import { getPortfolioData } from '@/lib/sanityFetch';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { HeroSection } from '@/components/sections/HeroSection';
-import { TechStackSection } from '@/components/sections/TechStackSection';
-import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { SplashScreen } from '@/components/celestial/SplashScreen';
 
 // Code-splitting komponen canvas dan section below-the-fold untuk memaksimalkan skor LCP & TBT
 const MilkyWayGalaxy = dynamic(
   () => import('@/components/celestial/MilkyWayGalaxy').then((m) => m.MilkyWayGalaxy),
   { ssr: false }
+);
+
+const TechStackSection = dynamic(
+  () => import('@/components/sections/TechStackSection').then((m) => m.TechStackSection),
+  { ssr: true }
+);
+
+const ProjectsSection = dynamic(
+  () => import('@/components/sections/ProjectsSection').then((m) => m.ProjectsSection),
+  { ssr: true }
 );
 
 const TimelineSection = dynamic(

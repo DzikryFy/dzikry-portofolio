@@ -17,6 +17,7 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
   showHUD = true,
   contentTargetId = 'main-content',
 }) => {
+  const [isSimReady, setIsSimReady] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const triggerWarpRef = useRef<() => void>(() => {});
   const [telemetry, setTelemetry] = useState({
@@ -27,7 +28,44 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
     isScrolling: false,
   });
 
+  // Penundaan cerdas: Mulai simulasi berat hanya setelah user klik 'JELAJAHI' atau browser idle
   useEffect(() => {
+    let idleId: any;
+    let timerId: any;
+
+    const startSimulation = () => {
+      setIsSimReady(true);
+    };
+
+    const hasSeenSplash =
+      typeof window !== 'undefined' &&
+      sessionStorage.getItem('skip_splash') === 'true';
+
+    if (mode === 'embedded' || hasSeenSplash) {
+      if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+        idleId = (window as any).requestIdleCallback(startSimulation, { timeout: 1800 });
+      } else {
+        timerId = setTimeout(startSimulation, 800);
+      }
+    }
+
+    const onSplashDismissed = () => {
+      startSimulation();
+    };
+
+    window.addEventListener('splash-dismissed', onSplashDismissed);
+
+    return () => {
+      window.removeEventListener('splash-dismissed', onSplashDismissed);
+      if (idleId && typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
+        (window as any).cancelIdleCallback(idleId);
+      }
+      if (timerId) clearTimeout(timerId);
+    };
+  }, [mode]);
+
+  useEffect(() => {
+    if (!isSimReady) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -61,7 +99,7 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
     // 1. GENERATE MILKY WAY GALAXY PARTICLES
     // ==========================================
     const isMobile = width < 768;
-    const STAR_COUNT = mode === 'fullscreen' ? (isMobile ? 180 : 600) : (isMobile ? 120 : 350);
+    const STAR_COUNT = mode === 'fullscreen' ? (isMobile ? 150 : 600) : (isMobile ? 100 : 350);
     interface Star {
       x: number;
       y: number;
@@ -1604,7 +1642,7 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
       window.removeEventListener('trigger-splash', handlePause);
       if (scrollTimeout) clearTimeout(scrollTimeout);
     };
-  }, [mode]);
+  }, [isSimReady, mode]);
 
   if (mode === 'embedded') {
     return (
@@ -1633,7 +1671,7 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
       </div>
 
       {/* Interactive Telemetry HUD (Live Orbit & Planet Rotation Status) */}
-      {showHUD && (
+      {showHUD && isSimReady && (
         <>
           {/* Desktop & Laptop HUD (md+) - Bersih, Tajam, & Bebas Efek Neon/Blur */}
           <div

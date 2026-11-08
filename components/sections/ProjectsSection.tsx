@@ -2,12 +2,17 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { AnimeTitleCard } from '@/components/celestial/AnimeTitleCard';
 import { ProjectCard } from '@/components/sections/ProjectCard';
-import { ProjectModal } from '@/components/sections/ProjectModal';
 import { Project } from '@/types';
 import { ArrowRight } from 'lucide-react';
+
+const ProjectModal = dynamic(
+  () => import('@/components/sections/ProjectModal').then((m) => m.ProjectModal),
+  { ssr: false }
+);
 
 interface ProjectsSectionProps {
   projects: Project[];
