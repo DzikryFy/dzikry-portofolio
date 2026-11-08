@@ -48,18 +48,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
           {/* Kolom Kiri: Tentang Saya & Profil Personal (Render Instan untuk Skor LCP Mobile <1.8s) */}
-          <div className="lg:col-span-7 flex flex-col items-start z-10 space-y-4 sm:space-y-5 self-center pt-2 pb-6 sm:pb-8">
-            {/* Status Ketersediaan Kerja (Sinyal Positif untuk HRD & Tech Recruiter) */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-[10px] sm:text-[11px] font-mono font-semibold tracking-wider select-none shadow-sm backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span>TERBUKA UNTUK MAGANG &amp; KERJA • DEPOK / JAKARTA &amp; REMOTE</span>
-            </div>
+          <div className="lg:col-span-7 flex flex-col items-start z-10 space-y-4 sm:space-y-6 self-center pt-2 pb-6 sm:pb-8 relative">
+            {/* Subtle Readability Ambient Backlight: menjaga keterbacaan teks tanpa menutupi estetika kosmik */}
+            <div className="absolute -inset-4 sm:-inset-6 bg-white/40 dark:bg-void-950/35 rounded-3xl blur-2xl -z-10 pointer-events-none" />
 
             {/* Nama & Subjudul Tipografi Cinzel Serasi */}
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <h1
                 onClick={() => {
                   if (typeof window !== 'undefined') {
@@ -67,82 +61,82 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profile }) => {
                     window.dispatchEvent(new CustomEvent('trigger-splash'));
                   }
                 }}
-                className="text-4xl sm:text-5xl lg:text-6xl font-serif font-extrabold text-brass dark:text-parchment tracking-tight cursor-pointer hover:opacity-90 transition-opacity select-none"
+                className="text-5xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-brass dark:text-parchment tracking-tight cursor-pointer hover:opacity-90 transition-opacity select-none"
                 title="Tampilkan Animasi Splash"
               >
                 {profile.name}
               </h1>
-              <p className="font-serif text-xs sm:text-sm font-medium tracking-[0.25em] uppercase text-brass dark:text-brass-light">
+              <p className="font-serif text-sm sm:text-base font-semibold tracking-[0.25em] uppercase text-brass dark:text-brass-light">
                 {profile.title || 'Software Engineer & Web Developer'}
               </p>
             </div>
 
             {/* Narasi Biografi Tentang Saya (Lugas & Autentik) */}
-            <div className="space-y-2.5 text-sm sm:text-base text-parchment-dim font-sans leading-relaxed max-w-xl">
+            <div className="space-y-3 text-base sm:text-lg text-parchment-dim font-sans leading-relaxed max-w-xl">
               {profile.bio && profile.bio.length > 0 ? (
                 profile.bio.map((para, idx) => (
-                  <p key={idx} className="relative pl-4 border-l border-brass/30">
+                  <p key={idx} className="relative pl-4 border-l-2 border-brass/40">
                     {para}
                   </p>
                 ))
               ) : (
-                <p className="relative pl-4 border-l border-brass/30">
+                <p className="relative pl-4 border-l-2 border-brass/40">
                   Hello, Saya Muhammad Dzikry Fikry, seorang Software Engineer &amp; Web Developer yang berfokus pada pengembangan sistem web full-stack, integrasi CMS modern, serta arsitektur backend yang rapi dan terukur.
                 </p>
               )}
             </div>
 
             {/* Tombol Aksi (Kapsul Melengkung Halus & Kontras Tinggi) */}
-            <div className="pt-1 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4 w-full">
+            <div className="pt-2 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3.5 sm:gap-4 w-full">
               <Link
                 href="/proyek"
                 onClick={handleExploreProjects}
-                className="group inline-flex items-center justify-center gap-2 px-6 py-2.5 sm:px-7 sm:py-3 rounded-full border border-brass bg-brass text-white dark:text-void-950 font-mono text-xs font-bold uppercase tracking-widest hover:bg-brass-light transition-all duration-200 shadow-brass-glow active:scale-95"
+                className="group inline-flex items-center justify-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full border border-brass bg-brass text-white dark:text-void-950 font-mono text-xs sm:text-sm font-bold uppercase tracking-widest hover:bg-brass-light transition-all duration-200 shadow-brass-glow active:scale-95"
               >
                 <span>LIHAT PROYEK</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 sm:w-4.5 sm:h-4.5 transition-transform group-hover:translate-x-1" />
               </Link>
 
               <a
                 href={mailtoHref}
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 sm:px-7 sm:py-3 rounded-full border border-brass/50 bg-white dark:bg-black text-slate-900 dark:text-parchment font-mono text-xs font-bold uppercase tracking-widest hover:border-brass hover:text-brass transition-all duration-200 shadow-sm dark:shadow-md dark:shadow-black active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3 sm:px-8 sm:py-3.5 rounded-full border border-brass/50 bg-white dark:bg-black text-slate-900 dark:text-parchment font-mono text-xs sm:text-sm font-bold uppercase tracking-widest hover:border-brass hover:text-brass transition-all duration-200 shadow-sm dark:shadow-md dark:shadow-black active:scale-95"
               >
-                <Mail className="w-4 h-4 text-brass" />
+                <Mail className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-brass" />
                 <span>HUBUNGI SAYA</span>
               </a>
             </div>
 
             {/* Deretan Link Ikonik Minimalis (GitHub, LinkedIn, Email) */}
-            <div className="pt-1 flex flex-wrap items-center gap-2 sm:gap-2.5 text-parchment-dim font-mono text-xs">
+            <div className="pt-1.5 flex flex-wrap items-center gap-2.5 sm:gap-3 text-parchment-dim font-mono text-xs sm:text-sm">
               <a
                 href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-brass/25 bg-white/70 dark:bg-void-950/70 hover:border-brass hover:bg-brass/10 hover:text-brass transition-all duration-200 shadow-sm"
+                className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brass/25 bg-white/70 dark:bg-void-950/70 hover:border-brass hover:bg-brass/10 hover:text-brass transition-all duration-200 shadow-sm"
                 title="Profil GitHub"
               >
-                <Github className="w-3.5 h-3.5 text-brass group-hover:scale-110 transition-transform" />
-                <span className="font-semibold text-[11px] tracking-wider uppercase">GitHub</span>
+                <Github className="w-4 h-4 text-brass group-hover:scale-110 transition-transform" />
+                <span className="font-semibold text-xs tracking-wider uppercase">GitHub</span>
               </a>
 
               <a
                 href={linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-brass/25 bg-white/70 dark:bg-void-950/70 hover:border-brass hover:bg-brass/10 hover:text-brass transition-all duration-200 shadow-sm"
+                className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brass/25 bg-white/70 dark:bg-void-950/70 hover:border-brass hover:bg-brass/10 hover:text-brass transition-all duration-200 shadow-sm"
                 title="Profil LinkedIn"
               >
-                <Linkedin className="w-3.5 h-3.5 text-brass group-hover:scale-110 transition-transform" />
-                <span className="font-semibold text-[11px] tracking-wider uppercase">LinkedIn</span>
+                <Linkedin className="w-4 h-4 text-brass group-hover:scale-110 transition-transform" />
+                <span className="font-semibold text-xs tracking-wider uppercase">LinkedIn</span>
               </a>
 
               <a
                 href={mailtoHref}
-                className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-brass/25 bg-white/70 dark:bg-void-950/70 hover:border-brass hover:bg-brass/10 hover:text-brass transition-all duration-200 shadow-sm"
+                className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brass/25 bg-white/70 dark:bg-void-950/70 hover:border-brass hover:bg-brass/10 hover:text-brass transition-all duration-200 shadow-sm"
                 title="Kirim Email"
               >
-                <Mail className="w-3.5 h-3.5 text-brass group-hover:scale-110 transition-transform" />
-                <span className="font-semibold text-[11px] tracking-wider uppercase">Email</span>
+                <Mail className="w-4 h-4 text-brass group-hover:scale-110 transition-transform" />
+                <span className="font-semibold text-xs tracking-wider uppercase">Email</span>
               </a>
             </div>
           </div>

@@ -51,7 +51,7 @@ export const TechStackSection: React.FC<TechStackSectionProps> = ({ techStack })
   return (
     <section
       id="tech-stack"
-      className="relative py-4 sm:py-5 border-y border-brass/15 bg-white/[0.02] dark:bg-void-950/[0.25] backdrop-blur-[2px] overflow-hidden select-none"
+      className="relative py-4 sm:py-5 border-y border-brass/15 bg-white/[0.02] dark:bg-void-950/[0.25] overflow-hidden select-none"
     >
       {/* Marquee Ticker 1 Baris Otomatis Bergerak Mulus dari Kanan ke Kiri Tanpa Judul & Deskripsi */}
       <motion.div

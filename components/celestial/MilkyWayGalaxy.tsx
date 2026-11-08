@@ -565,7 +565,7 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
       // Garis Orbit Utama Bumi (Dengan Penanda Musim Kardinal)
       ctx.beginPath();
       ctx.ellipse(0, 0, baseRx, baseRy, 0, 0, Math.PI * 2);
-      ctx.strokeStyle = isLight ? 'rgba(2, 132, 199, 0.38)' : 'rgba(197, 160, 89, 0.25)';
+      ctx.strokeStyle = isLight ? 'rgba(2, 132, 199, 0.20)' : 'rgba(197, 160, 89, 0.25)';
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 6]);
       ctx.stroke();
@@ -580,7 +580,7 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
       ];
 
       ctx.font = '8px "Cinzel", serif';
-      ctx.fillStyle = isLight ? 'rgba(2, 132, 199, 0.85)' : 'rgba(197, 160, 89, 0.45)';
+      ctx.fillStyle = isLight ? 'rgba(2, 132, 199, 0.40)' : 'rgba(197, 160, 89, 0.45)';
       ctx.textAlign = 'center';
       for (const m of markers) {
         const mx = Math.cos(m.angle) * baseRx;
@@ -634,14 +634,14 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
         ctx.stroke();
       }
 
-      // Sun Label & Jarak dari Bumi (1.00 AU)
-      ctx.font = 'bold 10px "Cinzel", serif';
-      ctx.fillStyle = isLight ? '#B45309' : '#FDE68A';
+      // Sun Label & Jarak dari Bumi (1.00 AU) - lembut dan tidak mengganggu konten teks
+      ctx.font = 'bold 9.5px "Cinzel", serif';
+      ctx.fillStyle = isLight ? 'rgba(180, 83, 9, 0.50)' : '#FDE68A';
       ctx.textAlign = 'center';
       ctx.fillText('MATAHARI', 0, sunRadius + 18);
 
-      ctx.font = '8px "Cinzel", serif';
-      ctx.fillStyle = isLight ? 'rgba(120, 53, 15, 0.85)' : 'rgba(230, 202, 126, 0.75)';
+      ctx.font = '7.5px "Cinzel", serif';
+      ctx.fillStyle = isLight ? 'rgba(120, 53, 15, 0.40)' : 'rgba(230, 202, 126, 0.65)';
       ctx.fillText('1.00 AU DARI BUMI', 0, sunRadius + 29);
 
       // ------------------------------------------
@@ -1293,15 +1293,18 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
           ctx.stroke();
         }
 
-        // Label Planet dan Jarak Real-Time dari Bumi
+        // Label Planet dan Jarak Real-Time dari Bumi (Soft di mode Light agar tidak menabrak teks Hero)
+        ctx.save();
+        if (isLight) ctx.globalAlpha = 0.55;
         ctx.font = 'bold 8px "Cinzel", serif';
         ctx.fillStyle = isLight ? p.lightTextColor : p.darkTextColor;
         ctx.textAlign = 'center';
         ctx.fillText(p.name, 0, p.radius + 14);
 
         ctx.font = '6.5px "Cinzel", serif';
-        ctx.fillStyle = isLight ? 'rgba(51, 65, 85, 0.75)' : 'rgba(230, 202, 126, 0.65)';
+        ctx.fillStyle = isLight ? 'rgba(51, 65, 85, 0.70)' : 'rgba(230, 202, 126, 0.65)';
         ctx.fillText(distText, 0, p.radius + 23);
+        ctx.restore();
 
         ctx.restore();
       });
@@ -1463,14 +1466,17 @@ export const MilkyWayGalaxy: React.FC<MilkyWayGalaxyProps> = ({
       ctx.shadowBlur = 0;
 
       // Label Bumi
+      ctx.save();
+      if (isLight) ctx.globalAlpha = 0.55;
       ctx.font = 'bold 9px "Cinzel", serif';
       ctx.fillStyle = isLight ? '#0369A1' : '#7DD3FC';
       ctx.textAlign = 'center';
       ctx.fillText('BUMI', 0, earthRadius + 15);
 
       ctx.font = '7px "Cinzel", serif';
-      ctx.fillStyle = isLight ? 'rgba(55, 65, 81, 0.85)' : 'rgba(237, 231, 216, 0.7)';
+      ctx.fillStyle = isLight ? 'rgba(55, 65, 81, 0.75)' : 'rgba(237, 231, 216, 0.7)';
       ctx.fillText('ROTASI: 23.5°', 0, earthRadius + 24);
+      ctx.restore();
 
       ctx.restore(); // Akhir transformasi Bumi
       ctx.restore(); // Akhir transformasi Orbit Pusat Matahari
