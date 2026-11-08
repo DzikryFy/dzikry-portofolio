@@ -31,13 +31,13 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
           description="Perjalanan karir profesional, pengalaman implementasi sistem perangkat lunak, dan latar belakang akademik."
         />
 
-        {/* Tab Switcher (Kapsul Melengkung Halus) */}
+        {/* Tab Switcher (Kapsul Melengkung Halus - 1 Baris di Layar Mobile) */}
         <motion.div
           initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-wrap items-center justify-start gap-3 mb-12 select-none"
+          className="flex flex-nowrap items-center justify-start gap-2 sm:gap-3 mb-10 sm:mb-12 select-none overflow-x-auto max-w-full pb-1"
         >
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -47,13 +47,13 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
                 key={tab.key}
                 type="button"
                 onClick={() => setActiveTab(tab.key)}
-                className={`inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full border text-xs font-mono font-bold tracking-wider transition-all duration-300 active:scale-95 cursor-pointer ${
+                className={`inline-flex items-center justify-center gap-2 sm:gap-2.5 px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-full border text-[11px] sm:text-xs font-mono font-bold tracking-wider transition-all duration-300 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap ${
                   isActive
-                    ? 'border-brass bg-brass text-white dark:text-void-950 shadow-brass-glow scale-105'
+                    ? 'border-brass bg-brass text-white dark:text-void-950 shadow-brass-glow'
                     : 'border-brass/30 bg-white/90 dark:bg-black/60 text-slate-700 dark:text-parchment-dim hover:border-brass hover:text-slate-900 dark:hover:text-parchment'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-white dark:text-void-950' : 'text-brass'}`} />
+                <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${isActive ? 'text-white dark:text-void-950' : 'text-brass'}`} />
                 <span>{tab.label}</span>
               </button>
             );
