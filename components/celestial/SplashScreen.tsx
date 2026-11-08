@@ -517,7 +517,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-7 sm:mt-9"
+          className="mt-6 sm:mt-9 flex justify-center w-full"
         >
           <button
             type="button"
@@ -525,49 +525,49 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
               e.stopPropagation();
               handleExplore();
             }}
-            className={`group relative inline-flex items-center justify-center gap-3 px-8 sm:px-12 py-3.5 sm:py-4 rounded-full border text-xs sm:text-sm font-semibold tracking-[0.3em] uppercase hover:scale-105 active:scale-95 transition-all duration-500 cursor-pointer pl-[0.3em] ${
+            className={`group relative inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-10 py-2.5 sm:py-3.5 rounded-full border text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shadow-md select-none ${
               isLightMode
-                ? 'border-[#0284C7]/50 bg-white/95 hover:bg-[#0284C7] text-[#0284C7] hover:text-white backdrop-blur-md shadow-md hover:shadow-[0_0_35px_rgba(2,132,199,0.5)]'
-                : 'border-white/40 bg-white/[0.06] hover:bg-white/[0.14] text-white backdrop-blur-md hover:border-cyan-300 hover:shadow-[0_0_35px_rgba(56,189,248,0.45)]'
-            }`}
+                ? 'border-[#0284C7]/45 bg-white/95 hover:bg-[#0284C7] text-[#0369A1] hover:text-white shadow-sky-500/10 hover:shadow-sky-500/25'
+                : 'border-white/30 bg-void-950/60 hover:bg-white/15 text-parchment hover:text-white shadow-black/50 hover:border-cyan-300 hover:shadow-cyan-500/20'
+            } backdrop-blur-md`}
             title="Masuk ke Portofolio"
           >
-            {/* Pendaran Cahaya Kosmis di Belakang Tombol (Ambient Aura) */}
+            {/* Pendaran Cahaya Kosmis Halus di Belakang Tombol */}
             <span
-              className={`absolute -inset-1 rounded-full blur-md opacity-40 group-hover:opacity-100 group-hover:blur-lg transition-all duration-500 pointer-events-none ${
+              className={`absolute -inset-0.5 rounded-full blur-sm opacity-30 group-hover:opacity-75 transition-opacity duration-300 pointer-events-none ${
                 isLightMode
-                  ? 'bg-gradient-to-r from-sky-400/25 via-[#0284C7]/20 to-blue-500/25'
-                  : 'bg-gradient-to-r from-cyan-500/20 via-white/25 to-blue-500/20'
+                  ? 'bg-gradient-to-r from-sky-400/20 via-blue-500/20 to-sky-400/20'
+                  : 'bg-gradient-to-r from-cyan-500/20 via-white/20 to-blue-500/20'
               }`}
             />
 
             {/* Efek Kilatan Sinar Menyapu (Shimmer Sweep) */}
             <span className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
             </span>
 
-            {/* Titik Orbit Berkedip Lembut */}
-            <span className="relative flex h-2 w-2 z-10">
+            {/* Titik Orbit Indikator (Bersih, Tajam, & Elegan Tanpa Blur Bleeding) */}
+            <span className="relative flex items-center justify-center h-2 w-2 z-10 shrink-0">
               <span
-                className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                className={`animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full opacity-40 ${
                   isLightMode ? 'bg-[#0284C7]' : 'bg-cyan-400'
                 }`}
               />
               <span
                 className={`relative inline-flex rounded-full h-2 w-2 ${
                   isLightMode
-                    ? 'bg-[#0284C7] group-hover:bg-white shadow-[0_0_8px_#0284c7]'
-                    : 'bg-cyan-300 group-hover:bg-white shadow-[0_0_8px_#38bdf8]'
+                    ? 'bg-[#0284C7] group-hover:bg-white'
+                    : 'bg-cyan-400 group-hover:bg-white'
                 } transition-colors`}
               />
             </span>
 
-            {/* Label Teks dengan Efek Glow */}
+            {/* Label Teks (Tajam, Terbaca Jelas, & Kontras Tinggi) */}
             <span
-              className={`relative z-10 transition-all ${
+              className={`relative z-10 font-sans tracking-[0.22em] transition-colors ${
                 isLightMode
-                  ? 'text-[#0284C7] group-hover:text-white drop-shadow-[0_0_10px_rgba(2,132,199,0.3)]'
-                  : 'text-white group-hover:text-cyan-100 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]'
+                  ? 'text-[#0369A1] group-hover:text-white font-bold'
+                  : 'text-parchment group-hover:text-white font-medium'
               }`}
             >
               JELAJAHI
@@ -575,15 +575,15 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
 
             {/* Ikon Panah Orbit Minimalis */}
             <svg
-              className={`relative z-10 w-3.5 h-3.5 transition-all duration-300 group-hover:translate-x-1 ${
+              className={`relative z-10 w-3.5 h-3.5 transition-all duration-300 group-hover:translate-x-1 shrink-0 ${
                 isLightMode
                   ? 'text-[#0284C7] group-hover:text-white'
-                  : 'text-white/70 group-hover:text-cyan-200'
+                  : 'text-parchment/80 group-hover:text-white'
               }`}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={2}
+              strokeWidth={2.2}
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
